@@ -11,7 +11,7 @@
             @csrf
             @method('post')
             <div class="login-logo">
-                <a href="../../index2.html">SNHS <b>Smart-Hub</b></a>
+                <a href="../../index2.html">OSNHS <b>Smart-Hub</b></a>
             </div>
             <div class="card">
                 <div class="card-body login-card-body">

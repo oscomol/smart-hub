@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\LoginCtrl;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Exports\StudentExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +42,37 @@ Route::group(['middleware' => 'auth'], function() {
         });
     });
 
-     //admin routes
-    Route::middleware(['checkRole:admin'])->group(function() {
-        Route::get('/admin', function(){
-            return view('layout.student');
-        });
-        
+   // Admin access routes
+    Route::middleware(['checkRole:administrator'])->group(function() {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/admin/student', [AdminController::class, 'student'])->name('admin.student');
+        Route::get('/admin/faculty', [AdminController::class, 'faculty'])->name('admin.faculty');
+        Route::get('/admin/account', [AdminController::class, 'account'])->name('admin.account');
+        Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
+        Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+        // user management
+        Route::post('/admin/account/register', [AdminController::class, 'register'])->name('admin.account.register');
+        Route::get('/admin/accounts/edit/{id}', [AdminController::class, 'edit'])->name('admin.account.edit');
+        Route::post('/admin/accounts/update/{id}', [AdminController::class, 'update'])->name('admin.account.update');
+        Route::delete('/admin/accounts/delete/{id}', [AdminController::class, 'destroy'])->name('admin.account.delete');
+
+        // student management
+        Route::post('/students', [AdminController::class, 'store'])->name('students.store');
+        Route::get('/students/{id}', [AdminController::class, 'show'])->name('students.show');
+        Route::get('/student/export/{id}', function ($id) {
+            return Excel::download(new StudentExport($id), 'student_information.xlsx');
+        })->name('student.export');
+       Route::put('/students/{id}', [AdminController::class, 'updateStudent'])->name('students.update');
+       Route::delete('/students/{id}', [AdminController::class, 'destroyStudent'])->name('students.destroy');
+
     });
+
+    Route::middleware(['checkRole:staff'])->group(function() {
+        Route::get('/staff', function(){
+            dd('staff');
+        });
+    });
+
 
      //faculty routes
     Route::middleware(['checkRole:faculty'])->group(function() {
