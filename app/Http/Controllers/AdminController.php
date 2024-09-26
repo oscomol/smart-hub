@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Guardian;
+use App\Models\AcademicRecord;
+use App\Models\MedicalRecord;
+use App\Models\DisciplinaryRecord;
+use App\Models\Faculty; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -130,16 +134,156 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Student information deleted successfully.');
     }
 
+    #store academic records
+    public function storeAcademic(Request $request, $studentId)
+    {
+        $request->validate([
+            'preschool_name' => 'required|string|max:255',
+            'preschool_year_graduated' => 'required|string|max:255',
+            'preschool_awards' => 'nullable|string|max:255',
+            'elementary_school_name' => 'required|string|max:255',
+            'elementary_year_graduated' => 'required|string|max:255',
+            'elementary_awards' => 'nullable|string|max:255',
+        ]);
 
-    #show function for viewing student info
+        $academicRecord = new AcademicRecord();
+        $academicRecord->student_id = $studentId;
+        $academicRecord->preschool_name = $request->preschool_name;
+        $academicRecord->preschool_year_graduated = $request->preschool_year_graduated;
+        $academicRecord->preschool_awards = $request->preschool_awards;
+        $academicRecord->elementary_school_name = $request->elementary_school_name;
+        $academicRecord->elementary_year_graduated = $request->elementary_year_graduated;
+        $academicRecord->elementary_awards = $request->elementary_awards;
+        $academicRecord->save();
+
+        return redirect()->back()->with('success', 'Academic record added successfully.');
+      
+    }
+
+    #Store Medical Record
+    public function storeMedical(Request $request, $studentId)
+    {
+        $request->validate([
+            'allergies' => 'required|string|max:255',
+            'medical_conditions' => 'required|string|max:255',
+            'current_medication' => 'required|string|max:255',
+            'physician_name' => 'required|string|max:255',
+            'physician_contact_number' => 'required|string|max:255',
+        ]);
+
+        $medicalRecord = new MedicalRecord();
+        $medicalRecord->student_id = $studentId;
+        $medicalRecord->allergies = $request->allergies;
+        $medicalRecord->medical_conditions = $request->medical_conditions;
+        $medicalRecord->current_medication = $request->current_medication;
+        $medicalRecord->physician_name = $request->physician_name;
+        $medicalRecord->physician_contact_number = $request->physician_contact_number;
+        $medicalRecord->save();
+
+        return redirect()->back()->with('success', 'Medical record added successfully.');
+       
+    }
+
+    #Store Disciplinary Record
+    public function storeDisciplinary(Request $request, $studentId)
+    {
+        $request->validate([
+            'incident_date' => 'required|date',
+            'incident_description' => 'required|string',
+            'action_taken' => 'required|string',
+        ]);
+
+        $disciplinaryRecord = new DisciplinaryRecord();
+        $disciplinaryRecord->student_id = $studentId;
+        $disciplinaryRecord->incident_date = $request->incident_date;
+        $disciplinaryRecord->incident_description = $request->incident_description;
+        $disciplinaryRecord->action_taken = $request->action_taken;
+        $disciplinaryRecord->save();
+
+        return redirect()->back()->with('success', 'Disciplinary record added successfully.');
+       
+    }
+
+    #Show records for a student
     public function show($id) {
-        $student = Student::with('guardian')->findOrFail($id); #Fetch the student with guardian info
-        return view('admin.student_show', compact('student'));
+        // Fetch the student with guardian info
+        $student = Student::with('guardian')->findOrFail($id);
+    
+        // Fetch the related records
+        $academicRecords = AcademicRecord::where('student_id', $id)->get();
+        $medicalRecords = MedicalRecord::where('student_id', $id)->get();
+        $disciplinaryRecords = DisciplinaryRecord::where('student_id', $id)->get();
+    
+        // Pass all records to the view
+        return view('admin.student_show', compact('student', 'academicRecords', 'medicalRecords', 'disciplinaryRecords'));
     }
     
+    #======= FACULTY MAMANAGEMENT  ==============
     public function faculty() {
-        return view('admin.faculty');
+        $faculties = Faculty::all();
+        return view('admin.faculty', compact('faculties'));
     }
+     #to show individual faculty details
+     public function showFacultyDetails($id) {
+        $faculty = Faculty::findOrFail($id);
+        return view('admin.faculty-details', compact('faculty'));
+    }
+
+    # store new faculty record
+    public function storeNewFaculty(Request $request) {
+        // Validate the incoming request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'birth' => 'required|date',
+            'gender' => 'required|string|max:10',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email|unique:faculties,email|max:255',
+            'faculty_id' => 'required|string|unique:faculties,faculty_id|max:20',
+            'degree' => 'required|string|max:100',
+            'specialization' => 'required|string|max:100',
+            'university' => 'required|string|max:100',
+            'graduation_year' => 'required|integer|min:1900|max:2100',
+            'certification' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:255',
+            'employment_date' => 'required|date',
+            'current_position' => 'required|string|max:100',
+            'department' => 'required|string|max:100',
+            'employment_type' => 'required|string|max:50',
+            'experience' => 'nullable|string',
+            'development_activities' => 'nullable|string',
+            'workshops' => 'nullable|string',
+            'conferences' => 'nullable|string',
+            'research' => 'nullable|string',
+            'awards' => 'nullable|string',
+        ], [
+            'email.unique' => 'The email has already been taken. Please use a different email.',
+            'faculty_id.unique' => 'The Faculty ID has already been taken. Please use a different Faculty ID.',
+        ]);
+    
+        // Create a new Faculty instance and fill it with the request data
+        $faculty = new Faculty();
+        $faculty->fill($request->all());
+        $faculty->save();
+    
+        // Redirect back with success message
+        return redirect()->route('admin.faculty')->with('success', 'Faculty record created successfully.');
+
+    }
+
+    
+    
+
+    public function create()
+    {
+        // Return the view for adding a new faculty
+        return view('admin.add_faculty'); // Adjust this to your actual view file
+    
+    }
+
+
+    
+    #========== END HERE =========================
 
     public function staff() {
         return view('admin.staff');

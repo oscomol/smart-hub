@@ -58,12 +58,31 @@ Route::group(['middleware' => 'auth'], function() {
 
         // student management
         Route::post('/students', [AdminController::class, 'store'])->name('students.store');
-        Route::get('/students/{id}', [AdminController::class, 'show'])->name('students.show');
-        Route::get('/student/export/{id}', function ($id) {
-            return Excel::download(new StudentExport($id), 'student_information.xlsx');
+        Route::put('/students/{id}', [AdminController::class, 'updateStudent'])->name('students.update');
+        Route::delete('/students/{id}', [AdminController::class, 'destroyStudent'])->name('students.destroy');
+
+       // download in excel format
+       Route::get('/student/export/{id}', function ($id) {
+        return Excel::download(new StudentExport($id), 'student_information.xlsx');
         })->name('student.export');
-       Route::put('/students/{id}', [AdminController::class, 'updateStudent'])->name('students.update');
-       Route::delete('/students/{id}', [AdminController::class, 'destroyStudent'])->name('students.destroy');
+
+        #students full info
+        Route::post('/students/{studentId}/academic', [AdminController::class, 'storeAcademic'])->name('academic.store');
+        Route::post('/students/{studentId}/medical', [AdminController::class, 'storeMedical'])->name('medical.store');
+        Route::post('/students/{studentId}/disciplinary', [AdminController::class, 'storeDisciplinary'])->name('disciplinary.store');
+        Route::get('/students/{id}', [AdminController::class, 'show'])->name('students.show');
+       
+
+        #faculty management routes
+        // Route to display the faculty listing
+        Route::get('/admin/faculty', [AdminController::class, 'faculty'])->name('admin.faculty');
+
+        // Route to display the detailed view for a specific faculty
+        Route::get('/admin/faculty/{id}', [AdminController::class, 'showFacultyDetails'])->name('admin.faculty.details');
+        // add new faculty record 
+        Route::post('/admin/faculty', [AdminController::class, 'storeNewFaculty'])->name('faculty.store');
+
+        Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
 
     });
 
@@ -74,9 +93,9 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
 
-     //faculty routes
+     //faculty routes  
     Route::middleware(['checkRole:faculty'])->group(function() {
-        Route::get('/faculty', function(){
+        Route::get('/faculty', function(){ #create another route to where faculty land after login, 
             dd('faculty');
         });
        

@@ -14,8 +14,8 @@
 
 @section('adminContent')
 <div class="container pt-3">
-        <!-- Success Message -->
-        @if(session('success'))
+     <!-- Success Message -->
+     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,6 +29,7 @@
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addStudentModal">
         Add New Student
     </button>
+
 
     <!-- Users Table -->
     <table id="students-table" class="table table-striped table-bordered">
