@@ -1,7 +1,5 @@
 @extends('layout.admin')
 
-@section('title', 'Student Records')
-
 @section('breadcrumbs')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -14,16 +12,12 @@
 
 @section('adminContent')
 <div class="container pt-3">
-     <!-- Success Message -->
-     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
 
+    @include('partials.message')
+
+    <h2>Student Records</h2>
+    <p>Manage student records on this page.</p>
+    <div class="title-line"></div>
     
     <!-- Button to Add record -->
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addStudentModal">
@@ -313,7 +307,16 @@
         </div>
     </div>
 </div>
-
+<style>
+    .title-line {
+        width: 100%; 
+        height: 2px;
+        background-color: #000; 
+        margin-top: 5px;
+        margin-bottom: 15px; 
+        border-radius: 1px; 
+    }
+</style>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

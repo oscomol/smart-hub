@@ -74,7 +74,7 @@ class AdminController extends Controller
             'remarks' => $request->remarks,
         ]);
 
-        return redirect()->back()->with('success', 'Student information saved successfully.');
+        return redirect()->back()->with('insert_success', 'Student information saved successfully.');
     }
 
     #Funtion to Update the tables
@@ -117,7 +117,7 @@ class AdminController extends Controller
             'father_name', 'mother_name', 'relationship'
         ]));
 
-        return redirect()->back()->with('success', 'Student information updated successfully.');
+        return redirect()->back()->with('update_info', 'Student information updated successfully.');
     }
 
     #fucntion to delete specific data
@@ -131,7 +131,7 @@ class AdminController extends Controller
         $student->delete();
         $guardian->delete();
 
-        return redirect()->back()->with('success', 'Student information deleted successfully.');
+        return redirect()->back()->with('delete_warning', 'Student information deleted successfully.');
     }
 
     #store academic records
@@ -156,7 +156,7 @@ class AdminController extends Controller
         $academicRecord->elementary_awards = $request->elementary_awards;
         $academicRecord->save();
 
-        return redirect()->back()->with('success', 'Academic record added successfully.');
+        return redirect()->back()->with('insert_success', 'Academic record added successfully.');
       
     }
 
@@ -180,7 +180,7 @@ class AdminController extends Controller
         $medicalRecord->physician_contact_number = $request->physician_contact_number;
         $medicalRecord->save();
 
-        return redirect()->back()->with('success', 'Medical record added successfully.');
+        return redirect()->back()->with('insert_success', 'Medical record added successfully.');
        
     }
 
@@ -200,7 +200,7 @@ class AdminController extends Controller
         $disciplinaryRecord->action_taken = $request->action_taken;
         $disciplinaryRecord->save();
 
-        return redirect()->back()->with('success', 'Disciplinary record added successfully.');
+        return redirect()->back()->with('insert_success', 'Disciplinary record added successfully.');
        
     }
 
@@ -220,16 +220,23 @@ class AdminController extends Controller
     
     #======= FACULTY MAMANAGEMENT  ==============
     public function faculty() {
-        $faculties = Faculty::all();
+        // Retrieve all faculties, ordered by updated_at in descending order
+        $faculties = Faculty::orderBy('updated_at', 'desc')->get();
         return view('admin.faculty', compact('faculties'));
     }
+    
      #to show individual faculty details
      public function showFacultyDetails($id) {
         $faculty = Faculty::findOrFail($id);
         return view('admin.faculty-details', compact('faculty'));
     }
 
-    # store new faculty record
+    #to add new record
+    public function create() {
+        return view('admin.add_faculty'); 
+       
+    }
+    # method to insert faculty record
     public function storeNewFaculty(Request $request) {
         // Validate the incoming request data
         $request->validate([
@@ -267,19 +274,66 @@ class AdminController extends Controller
         $faculty->save();
     
         // Redirect back with success message
-        return redirect()->route('admin.faculty')->with('success', 'Faculty record created successfully.');
+        return redirect()->route('admin.faculty')->with('insert_success', 'Faculty record created successfully.');
 
     }
-
+    #edit page route
+    public function editSingleRecord($id) {
+        $faculty = Faculty::findOrFail($id);
+        return view('admin.edit_faculty', compact('faculty')); 
     
-    
+    }
 
-    public function create()
+    #to update record
+    public function updateSingleFacultyRecord(Request $request, $id){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'birth' => 'required|date',
+            'gender' => 'required|string|max:10',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email|max:255|unique:faculties,email,' . $id,
+            'faculty_id' => 'required|string|max:20|unique:faculties,faculty_id,' . $id,
+            'degree' => 'required|string|max:100',
+            'specialization' => 'required|string|max:100',
+            'university' => 'required|string|max:100',
+            'graduation_year' => 'required|integer|min:1900|max:2100',
+            'certification' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:255',
+            'employment_date' => 'required|date',
+            'current_position' => 'required|string|max:100',
+            'department' => 'required|string|max:100',
+            'employment_type' => 'required|string|max:50',
+            'experience' => 'nullable|string',
+            'development_activities' => 'nullable|string',
+            'workshops' => 'nullable|string',
+            'conferences' => 'nullable|string',
+            'research' => 'nullable|string',
+            'awards' => 'nullable|string',
+        ], [
+            'email.unique' => 'The email has already been taken. Please use a different email.',
+            'faculty_id.unique' => 'The Faculty ID has already been taken. Please use a different Faculty ID.',
+        ]);
+
+        $faculty = Faculty::findOrFail($id);
+        $faculty->update($request->all());
+
+       // Redirect back with success message
+       return redirect()->route('admin.faculty')->with('update_info', 'Faculty record updated successfully.');
+    
+    }
+
+
+    // to delete
+    public function deleteFacultyRecord($id)
     {
-        // Return the view for adding a new faculty
-        return view('admin.add_faculty'); // Adjust this to your actual view file
-    
+        $faculty = Faculty::findOrFail($id);
+        $faculty->delete();
+
+        return redirect()->back()->with('delete_warning', 'Faculty record deleted successfully.');
+        
     }
+
 
 
     
@@ -328,7 +382,7 @@ class AdminController extends Controller
     
         User::create($userData);
     
-        return redirect()->back()->with('success', 'User registered successfully.');
+        return redirect()->back()->with('insert_success', 'User registered successfully.');
     }
       #Method to show edit user form
     public function edit($id)
@@ -359,7 +413,7 @@ class AdminController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success', 'User updated successfully.');
+        return redirect()->back()->with('update_info', 'User updated successfully.');
     }
     #Method to delete user
     public function destroy($id)
@@ -367,7 +421,7 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->back()->with('success', 'User deleted successfully.');
+        return redirect()->back()->with('delete_warning', 'User deleted successfully.');
     }
     
 }
