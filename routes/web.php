@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginCtrl;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Exports\StudentExport;
+use App\Http\Controllers\FacultyCtrl;
 use Maatwebsite\Excel\Facades\Excel;
 
 /*
@@ -92,12 +93,34 @@ Route::group(['middleware' => 'auth'], function() {
         });
     });
 
-
      //faculty routes  
     Route::middleware(['checkRole:faculty'])->group(function() {
-        Route::get('/faculty', function(){ #create another route to where faculty land after login, 
-            dd('faculty');
+        Route::get('/faculty', function(){
+           return view("faculty.dashboard");
         });
+
+        Route::get('/faculty/list', [FacultyCtrl::class, 'index']);
+
+        Route::get('/faculty/{id}', [FacultyCtrl::class, 'show']);
+        Route::get('/faculty/edit/{id}', [FacultyCtrl::class, 'editView']);
+
+       
+        
+        Route::put('/faculty/edit/{id}/save', [FacultyCtrl::class, 'update'])->name('faculty.edit');
+
+        Route::get('/faculty/qualification/{id}', [FacultyCtrl::class, 'qualificationShow']);
+        Route::post('/faculty/qualification/add/{faculty_id}', [FacultyCtrl::class, 'addQualification'])->name('add.qualification');
+        Route::delete('/qualification/delete/{qualification_id}', [FacultyCtrl::class, 'deleteQualification'])->name('delete.qualification');
+        Route::put('/qualification/update/{qualification_id}', [FacultyCtrl::class, 'updateQualification'])->name('update.qualification');
+
+        Route::get('/faculty/teaching-assignment/{id}', [FacultyCtrl::class, 'teachingAssignShow']);
+        Route::post('/faculty/assignment/add/{faculty_id}', [FacultyCtrl::class, 'addAssignment'])->name('add.assignment');
+        Route::delete('/assignment/delete/{assignment_id}', [FacultyCtrl::class, 'deleteAssignment'])->name('delete.assignment');
+        Route::put('/assignment/update/{assignment_id}', [FacultyCtrl::class, 'updateAssignment'])->name('update.assignment');
+
+        Route::get('/faculty/student/list', function(){
+            return view("faculty.students");
+         });
        
     });
 

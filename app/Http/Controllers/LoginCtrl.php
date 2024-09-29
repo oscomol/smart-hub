@@ -15,6 +15,7 @@ class LoginCtrl extends Controller
     }
 
     public function login(Request $request) {
+        
         $userType = $request->userType;
 
         if ($request->isMethod('post')) {
@@ -34,9 +35,9 @@ class LoginCtrl extends Controller
                     if ($userType === "staff") {
                         return redirect('/staff'); 
                     }
-                } else {
-                    return back()->with('error', true);
                 }
+                    return back()->with('error', true);
+                
             } elseif (in_array($userType, ["student", "parents"])) {
                 $credentials = [
                     'lrn' => $request->lrn,
@@ -60,9 +61,9 @@ class LoginCtrl extends Controller
 
     public function sampleInsertUser() {
         User::create([
-            "lrn" => 7161,
-            "password" => Hash::make('student'),
-            "userType" => "parents"
+            "username" => "faculty",
+            "password" => Hash::make('faculty'),
+            "userType" => "faculty"
         ]);
     }
 }

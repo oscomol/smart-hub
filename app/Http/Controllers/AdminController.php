@@ -231,6 +231,7 @@ class AdminController extends Controller
 
     # store new faculty record
     public function storeNewFaculty(Request $request) {
+       
         // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:255',
