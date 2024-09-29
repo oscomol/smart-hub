@@ -237,19 +237,38 @@
                             </a>
                         </li>
         
-                        <li class="nav-item">
-                            <a href="{{ route('admin.student') }}" class="nav-link {{ request()->is('admin/student') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-user-graduate"></i>
-                                <p>Student Records</p>
+                        <!-- Records Dropdown -->
+                        <li class="nav-item has-treeview {{ request()->is('admin/student') || request()->is('admin/faculty') || request()->is('admin/staff') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('admin/student') || request()->is('admin/faculty') || request()->is('admin/staff') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>
+                                    Records
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.student') }}" class="nav-link {{ request()->is('admin/student') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-user-graduate"></i>
+                                        <p>Student Records</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.faculty') }}" class="nav-link {{ request()->is('admin/faculty') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                        <p>Faculty Records</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.staff') }}" class="nav-link {{ request()->is('admin/staff') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-users"></i> 
+                                        <p>Staff Records</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-        
-                        <li class="nav-item">
-                            <a href="{{ route('admin.faculty') }}" class="nav-link {{ request()->is('admin/faculty') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chalkboard-teacher"></i>
-                                <p>Faculty Records</p>
-                            </a>
-                        </li>
+                        <!-- End of Records Dropdown -->
+
         
                         <li class="nav-item">
                             <a href="{{ route('admin.reports') }}" class="nav-link {{ request()->is('admin/reports') ? 'active' : '' }}">
@@ -264,6 +283,17 @@
                                 <p>Settings</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                       
         
                     </ul>
                 </nav>

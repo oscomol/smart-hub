@@ -1,21 +1,22 @@
 @extends('layout.admin')
 
-@section('title', 'Accounts')
-
+@section('breadcrumbs')
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Accounts</li>
+    </ol>
+</nav>
+@endsection
 
 @section('adminContent')
 <div class="container mt-4">
-    <!-- Success Message -->
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+
+    @include('partials.message')
     
     <h2>Accounts</h2>
+    <p>Manage users account on this page.</p>
+    <div class="title-line"></div>
     
     <!-- Button to Add User -->
     <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#registerUserModal">
@@ -183,7 +184,16 @@
         </div>
     </div>
 </div>
-
+<style>
+    .title-line {
+        width: 100%; 
+        height: 2px;
+        background-color: #000; 
+        margin-top: 5px;
+        margin-bottom: 15px; 
+        border-radius: 1px; 
+    }
+</style>
 <!-- Include DataTables CSS and JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

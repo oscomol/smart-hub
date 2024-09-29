@@ -1,7 +1,5 @@
 @extends('layout.admin')
 
-@section('title', 'Student Info')
-
 @section('breadcrumbs')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
