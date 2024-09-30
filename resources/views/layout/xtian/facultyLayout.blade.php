@@ -77,14 +77,14 @@
                       </p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{url('/faculty/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-address-book"></i>
                       <p>
                         Students
                       </p>
                     </a>
-                  </li>
+                  </li> --}}
 
                 </ul>
               </nav>

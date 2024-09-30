@@ -105,9 +105,8 @@ Route::group(['middleware' => 'auth'], function() {
 
      //faculty routes  
     Route::middleware(['checkRole:faculty'])->group(function() {
-        Route::get('/faculty', function(){
-           return view("faculty.dashboard");
-        });
+        Route::get('/faculty', [FacultyCtrl::class, 'facultyDash']);
+       
 
         Route::get('/faculty/list', [FacultyCtrl::class, 'index']);
 
@@ -131,7 +130,5 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/faculty/student/list', function(){
             return view("faculty.students");
          });
-       
     });
-
 });

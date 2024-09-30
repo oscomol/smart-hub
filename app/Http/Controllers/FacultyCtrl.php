@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use App\Models\Qualification;
+use App\Models\Student;
 use App\Models\TeachingAssign;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -143,5 +145,17 @@ class FacultyCtrl extends Controller
         } catch (Exception $err) {
          return back()->with("error", "Server error");
         }
+     }
+
+     public function facultyDash(Request $request){
+        $facultyCount = User::where("userType", "faculty")->count();
+        $studentCount = User::where("userType", "student")->count();
+        $parentsCount = User::where("userType", "parents")->count();
+        $staffCount = User::where("userType", "staff")->count();
+
+        $recentFaculty = Faculty::latest()->limit(10)->get();
+        $recentStudent = Student::latest()->limit(8)->get();
+
+        return view("faculty.dashboard", compact('facultyCount', 'studentCount', 'parentsCount', 'staffCount', 'recentFaculty', 'recentStudent'));
      }
 }
