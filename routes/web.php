@@ -7,6 +7,10 @@ use App\Exports\StudentExport;
 use App\Http\Controllers\FacultyCtrl;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\FacAnnouncementCtrl;
+use App\Http\Controllers\FacNotifCtrl;
+use App\Http\Controllers\FacultyTaskCtrl;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -126,6 +130,18 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/faculty/assignment/add/{faculty_id}', [FacultyCtrl::class, 'addAssignment'])->name('add.assignment');
         Route::delete('/assignment/delete/{assignment_id}', [FacultyCtrl::class, 'deleteAssignment'])->name('delete.assignment');
         Route::put('/assignment/update/{assignment_id}', [FacultyCtrl::class, 'updateAssignment'])->name('update.assignment');
+
+        Route::get('/faculty/task/list', [FacultyTaskCtrl::class, 'index']);
+        Route::delete('/faculty/event/delete', [FacultyTaskCtrl::class, 'destroy'])->name('delete.event');
+        Route::post('/faculty/event/add', [FacultyTaskCtrl::class, 'store'])->name('add.event');
+        Route::put('/faculty/event/edit/{id}', [FacultyTaskCtrl::class, 'edit'])->name('edit.event');
+
+        Route::get('/faculty/notification/list', [FacNotifCtrl::class, 'index']);
+
+        Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
+        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
+        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
+        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
 
         Route::get('/faculty/student/list', function(){
             return view("faculty.students");

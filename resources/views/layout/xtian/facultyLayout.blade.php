@@ -77,6 +77,30 @@
                       </p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{url('/faculty/task/list')}}" class="nav-link {{ request()->is('faculty/task/list') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-calendar"></i>
+                      <p>
+                        Task
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/faculty/notification/list')}}" class="nav-link {{ request()->is('faculty/notification/list') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-bell"></i>
+                      <p>
+                        Notification
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/faculty/announcement/list')}}" class="nav-link {{ request()->is('faculty/announcement/list') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-bell"></i>
+                      <p>
+                        Announcement
+                      </p>
+                    </a>
+                  </li>
                   {{-- <li class="nav-item">
                     <a href="{{url('/faculty/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-address-book"></i>
