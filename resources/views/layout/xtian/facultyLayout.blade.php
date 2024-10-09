@@ -68,7 +68,16 @@
                         </p>
                       </a>
                     </li>
-        
+
+                    <li class="nav-item">
+                      <a href="{{url('/faculty/grade-section/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
+                        <i class="nav-icon far fa-calendar"></i>
+                        <p>
+                          Class Management
+                        </p>
+                      </a>
+                    </li>
+
                   <li class="nav-item">
                     <a href="{{url('/faculty/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
                       <i class="nav-icon far fa-calendar"></i>
@@ -81,15 +90,7 @@
                     <a href="{{url('/faculty/task/list')}}" class="nav-link {{ request()->is('faculty/task/list') ? 'active' : '' }}">
                       <i class="nav-icon far fa-calendar"></i>
                       <p>
-                        Task
-                      </p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{url('/faculty/notification/list')}}" class="nav-link {{ request()->is('faculty/notification/list') ? 'active' : '' }}">
-                      <i class="nav-icon far fa-bell"></i>
-                      <p>
-                        Notification
+                        Events
                       </p>
                     </a>
                   </li>
@@ -98,6 +99,22 @@
                       <i class="nav-icon far fa-bell"></i>
                       <p>
                         Announcement
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/faculty/memo/list')}}" class="nav-link {{ request()->is('faculty/memo/list') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-bell"></i>
+                      <p>
+                        Memo
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{url('/faculty/notification/list')}}" class="nav-link {{ request()->is('faculty/notification/list') ? 'active' : '' }}">
+                      <i class="nav-icon far fa-bell"></i>
+                      <p>
+                        Notification
                       </p>
                     </a>
                   </li>
