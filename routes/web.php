@@ -8,6 +8,8 @@ use App\Http\Controllers\FacultyCtrl;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\FacAnnouncementCtrl;
+use App\Http\Controllers\FacGradeCtrl;
+use App\Http\Controllers\FacMemoCtrl;
 use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
 use App\Http\Controllers\UserLogController;
@@ -170,6 +172,20 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
         Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
         Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
+
+        Route::get('/faculty/memo/list', [FacMemoCtrl::class, 'index']);
+        Route::post('/faculty/memo/add', [FacMemoCtrl::class, 'store'])->name('add.memo');
+        Route::put('/faculty/memo/edit/{id}', [FacMemoCtrl::class, 'edit'])->name('edit.memo');
+        Route::delete('/faculty/memo/delete', [FacMemoCtrl::class, 'destroy'])->name('delete.memo');
+
+        Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'index']);
+        Route::post('/faculty/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
+        Route::put('/faculty/grade/edit/{id}', [FacGradeCtrl::class, 'edit'])->name('edit.grade');
+        Route::delete('/faculty/grade/delete', [FacGradeCtrl::class, 'destroy'])->name('delete.grade');
+
+        Route::get('/faculty/grade-section/list/{id}', [FacGradeCtrl::class, 'shedule'])->name('show.schedule');
+        Route::post('/faculty/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
+        Route::delete('/faculty/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
 
         Route::get('/faculty/student/list', function(){
             return view("faculty.students");
