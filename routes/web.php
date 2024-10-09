@@ -12,8 +12,15 @@ use App\Http\Controllers\FacGradeCtrl;
 use App\Http\Controllers\FacMemoCtrl;
 use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
+<<<<<<< HEAD
 use App\Http\Controllers\StudentMainCtrl;
 use App\Http\Controllers\UserLogController;
+=======
+use App\Http\Controllers\UserLogController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\GovernanceController;
+use App\Models\Governance;
+>>>>>>> d6d4117 (Added SchoolController and related models, views, and activity log function; completed administrative modules)
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +81,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/admin/staff', [AdminController::class, 'staff'])->name('admin.staff');
+<<<<<<< HEAD
         Route::get('/admin/logs', action: [UserLogController::class, 'logs'])->name('admin.logs');
+=======
+        Route::get('/admin/logs', [UserLogController::class, 'logs'])->name('admin.logs');
+>>>>>>> d6d4117 (Added SchoolController and related models, views, and activity log function; completed administrative modules)
         // user management
         Route::post('/admin/account/register', [AdminController::class, 'register'])->name('admin.account.register');
         Route::get('/admin/accounts/edit/{id}', [AdminController::class, 'edit'])->name('admin.account.edit');
@@ -113,6 +124,30 @@ Route::group(['middleware' => 'auth'], function() {
         // Route to delete the faculty record
         Route::delete('/admin/faculty/{id}', [AdminController::class, 'deleteFacultyRecord'])->name('admin.faculty.delete');
 
+        //schools info
+        Route::resource('admin/schools', SchoolController::class);
+        Route::resource('admin/governance', GovernanceController::class); 
+        // facilities
+        Route::get('facilities', [SchoolController::class, 'facilities'])->name('facilities.index');
+        Route::get('facilities/create', [SchoolController::class, 'create'])->name('facilities.create');
+        Route::post('facilities/store', [SchoolController::class, 'storeFacility'])->name('facilities.storeFacility');
+        Route::get('facilities/edit/{id}', [SchoolController::class, 'editFacilities'])->name('facilities.editFacilities');
+        Route::put('facilities/update/{id}', [SchoolController::class, 'updateFacilities'])->name('facilities.updateFacilities');
+        Route::delete('facilities/{id}', [SchoolController::class, 'destroyFacilities'])->name('facilities.destroyFacilities');
+        //procedures
+        Route::get('procedures',[SchoolController::class, 'Procedures'])->name('procedures.index');
+        Route::get('procedures/create',[SchoolController::class, 'createProcedure'])->name('procedures.createProcedure');
+        Route::get('procedures/edit/{id}',[SchoolController::class, 'editProcedure'])->name('procedures.editProcedure');
+        Route::post('procedures/store',[SchoolController::class, 'storeProcedure'])->name('procedures.storeProcedure');
+        Route::put('procedures/update/{id}', [SchoolController::class, 'updateProcedure'])->name('procedures.updateProcedure');
+        Route::delete('procedures/{id}',[SchoolController::class, 'destroyProcedure'])->name('procedures.destroyProcedure');
+        //policies
+        Route::get('policies',[SchoolController::class, 'Policies'])->name('policies.index');
+        Route::get('policies/create',[SchoolController::class, 'createPolicies'])->name('policies.createPolicies');
+        Route::get('policies/edit/{id}',[SchoolController::class, 'editPolicies'])->name('policies.editPolicies');
+        Route::post('policies/store',[SchoolController::class, 'storePolicies'])->name('policies.storePolicies');
+        Route::put('policies/update/{id}',[SchoolController::class, 'updatePolicies'])->name('policies.updatePolicies');
+        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');
 
     });
 
