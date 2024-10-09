@@ -9,12 +9,14 @@ use App\Models\AcademicRecord;
 use App\Models\MedicalRecord;
 use App\Models\DisciplinaryRecord;
 use App\Models\Faculty; 
+use App\Traits\LogUserActivityTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+    use LogUserActivityTrait;
     public function index() { #function to view dasboard
         return view('admin.dashboard'); 
     }
@@ -74,6 +76,9 @@ class AdminController extends Controller
             'remarks' => $request->remarks,
         ]);
 
+        // Log user activity
+        $this->logActivity('Added a new student: ' . $student->name);
+
         return redirect()->back()->with('insert_success', 'Student information saved successfully.');
     }
 
@@ -117,6 +122,9 @@ class AdminController extends Controller
             'father_name', 'mother_name', 'relationship'
         ]));
 
+        // Log user activity
+        $this->logActivity('Updated student: ' . $student->name);
+
         return redirect()->back()->with('update_info', 'Student information updated successfully.');
     }
 
@@ -131,6 +139,9 @@ class AdminController extends Controller
         $student->delete();
         $guardian->delete();
 
+        // Log user activity
+        $this->logActivity('Deleted student: ' . $student->name);
+        
         return redirect()->back()->with('delete_warning', 'Student information deleted successfully.');
     }
 
@@ -156,6 +167,9 @@ class AdminController extends Controller
         $academicRecord->elementary_awards = $request->elementary_awards;
         $academicRecord->save();
 
+        // Log user activity
+        $this->logActivity('Added academic record for student ID: ' . $studentId);
+
         return redirect()->back()->with('insert_success', 'Academic record added successfully.');
       
     }
@@ -180,6 +194,9 @@ class AdminController extends Controller
         $medicalRecord->physician_contact_number = $request->physician_contact_number;
         $medicalRecord->save();
 
+         // Log user activity
+         $this->logActivity('Added medical record for student ID: ' . $studentId);
+
         return redirect()->back()->with('insert_success', 'Medical record added successfully.');
        
     }
@@ -199,6 +216,9 @@ class AdminController extends Controller
         $disciplinaryRecord->incident_description = $request->incident_description;
         $disciplinaryRecord->action_taken = $request->action_taken;
         $disciplinaryRecord->save();
+
+        // Log user activity
+        $this->logActivity('Added disciplinary record for student ID: ' . $studentId);
 
         return redirect()->back()->with('insert_success', 'Disciplinary record added successfully.');
        
@@ -274,6 +294,8 @@ class AdminController extends Controller
         $faculty->fill($request->all());
         $faculty->save();
     
+        // Log user activity
+        $this->logActivity('Added a new faculty member: ' . $faculty->name);
         // Redirect back with success message
         return redirect()->route('admin.faculty')->with('insert_success', 'Faculty record created successfully.');
 
@@ -319,6 +341,9 @@ class AdminController extends Controller
         $faculty = Faculty::findOrFail($id);
         $faculty->update($request->all());
 
+        // Log user activity
+        $this->logActivity('Updated faculty member: ' . $faculty->name);
+
        // Redirect back with success message
        return redirect()->route('admin.faculty')->with('update_info', 'Faculty record updated successfully.');
     
@@ -330,6 +355,9 @@ class AdminController extends Controller
     {
         $faculty = Faculty::findOrFail($id);
         $faculty->delete();
+
+        // Log user activity
+        $this->logActivity('Deleted faculty member: ' . $faculty->name);
 
         return redirect()->back()->with('delete_warning', 'Faculty record deleted successfully.');
         
@@ -343,6 +371,10 @@ class AdminController extends Controller
     public function staff() {
         return view('admin.staff');
     }
+
+    // public function logs() {
+    //     return view('admin.logs');
+    // }
 
     public function account() {
         $users = User::all(); #Fetch all users
@@ -381,8 +413,13 @@ class AdminController extends Controller
             $userData['lrn'] = $request->lrn;
         }
     
-        User::create($userData);
-    
+       # Save the new user and store the instance in a variable
+        $user = User::create($userData);
+
+        # Log the activity
+        $this->logActivity('Registered a new user: ' . $user->username);
+
+        
         return redirect()->back()->with('insert_success', 'User registered successfully.');
     }
       #Method to show edit user form
@@ -414,6 +451,9 @@ class AdminController extends Controller
 
         $user->save();
 
+        # Log the activity
+        $this->logActivity('Updated user information: ' . $user->username);
+
         return redirect()->back()->with('update_info', 'User updated successfully.');
     }
     #Method to delete user
@@ -421,6 +461,9 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+       # Log the activity before deletion
+       $this->logActivity('Deleted user: ' . $user->username);
 
         return redirect()->back()->with('delete_warning', 'User deleted successfully.');
     }

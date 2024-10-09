@@ -9,67 +9,70 @@
     </nav>
 @endsection
 
+@section('title')
+    Student Management
+@endsection
 
 @section('adminContent')
-<div class="container pt-3">
-
+<div class="container-fluid pt-3">
     @include('partials.message')
-
-    <h2>Student Records</h2>
-    <p>Manage student records on this page.</p>
-    <div class="title-line"></div>
-    
-    <!-- Button to Add record -->
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addStudentModal">
-        Add New Student
-    </button>
-
-
-    <!-- Users Table -->
-    <table id="students-table" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>LRN</th>
-                <th>Student Name</th>
-                <th>Contact Number</th>
-                <th>Barangay</th>
-                <th>Municipality</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($students as $student)
-                <tr>
-                    <td>{{ $student->lrn }}</td>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->contact_number }}</td>
-                    <td>{{ $student->barangay }}</td>
-                    <td>{{ $student->municipality }}</td>
-                    <td>
-                        <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </a>
-                    
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#" onclick="openEditModal({{ $student->id }}, '{{ $student->lrn }}', '{{ $student->name }}', '{{ $student->sex }}', '{{ $student->birth_date }}', '{{ $student->mother_tongue }}', '{{ $student->ip_ethnic_group }}', '{{ $student->religion }}', '{{ $student->barangay }}', '{{ $student->municipality }}', '{{ $student->contact_number }}', '{{ $student->learning_modality }}', '{{ $student->remarks }}', '{{ $student->father_name }}', '{{ $student->mother_name }}', '{{ $student->relationship }}')">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a class="dropdown-item" href="#" onclick="openDeleteModal({{ $student->id }})">
-                                    <i class="fas fa-trash"></i> Delete
-                                </a>
-                                <a class="dropdown-item" href="{{ route('students.show', $student->id) }}">
-                                    <i class="fas fa-eye"></i> View Info
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Student Records</h3>
+                    <button type="button" class="btn btn-primary mb-3 float-right" data-toggle="modal" data-target="#addStudentModal">
+                        Add New Student
+                    </button>
+                </div>
+                <div class="card-body">
+                    <table id="students-table" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>LRN</th>
+                                <th>Student Name</th>
+                                <th>Contact Number</th>
+                                <th>Barangay</th>
+                                <th>Municipality</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($students as $student)
+                                <tr>
+                                    <td>{{ $student->lrn }}</td>
+                                    <td>{{ $student->name }}</td>
+                                    <td>{{ $student->contact_number }}</td>
+                                    <td>{{ $student->barangay }}</td>
+                                    <td>{{ $student->municipality }}</td>
+                                    <td>
+                                        <div class="dropdown show">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Options
+                                            </a>
+                                    
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="#" onclick="openEditModal({{ $student->id }}, '{{ $student->lrn }}', '{{ $student->name }}', '{{ $student->sex }}', '{{ $student->birth_date }}', '{{ $student->mother_tongue }}', '{{ $student->ip_ethnic_group }}', '{{ $student->religion }}', '{{ $student->barangay }}', '{{ $student->municipality }}', '{{ $student->contact_number }}', '{{ $student->learning_modality }}', '{{ $student->remarks }}', '{{ $student->father_name }}', '{{ $student->mother_name }}', '{{ $student->relationship }}')">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <a class="dropdown-item" href="#" onclick="openDeleteModal({{ $student->id }})">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('students.show', $student->id) }}">
+                                                    <i class="fas fa-eye"></i> View Info
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>                
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Add Student Modal -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
@@ -307,16 +310,6 @@
         </div>
     </div>
 </div>
-<style>
-    .title-line {
-        width: 100%; 
-        height: 2px;
-        background-color: #000; 
-        margin-top: 5px;
-        margin-bottom: 15px; 
-        border-radius: 1px; 
-    }
-</style>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
