@@ -1,7 +1,7 @@
 @extends('layout.xtian.facultyLayout')
 
 @section('title')
-    Tasks
+    Events
 @endsection
 
 @section('content')
@@ -42,6 +42,9 @@
                                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-event-{{$item->id}}">
                                         <li class="fa fa-trash"></li>
                                     </button>
+                                    <a href="{{route('attendance.event', ['id' => $item->id])}}" class="btn btn-sm btn btn-secondary">
+                                      <li class="fa fa-arrow-circle-right"></li>
+                                    </a>
                                 </td>
                               </tr>
                               <div>

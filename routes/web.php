@@ -12,6 +12,7 @@ use App\Http\Controllers\FacGradeCtrl;
 use App\Http\Controllers\FacMemoCtrl;
 use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
+use App\Http\Controllers\StudentMainCtrl;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +42,20 @@ Route::group(['middleware' => 'auth'], function() {
     //student routes
     Route::middleware(['checkRole:student'])->group(function() {
         Route::get('/student', function(){
-            return view('layout.student');
+
+           
+
+            return view('student.schedule');
         });
+
+        Route::get('/student/event', [StudentMainCtrl::class, 'eventIndex']);
+        Route::post('/student/event/in/{id}', [StudentMainCtrl::class, 'eventIn'])->name('event.in');
+
+        Route::get('/student/notification', [StudentMainCtrl::class, 'notificationIndex']);
+        Route::get('/student/notification/getNotif', [StudentMainCtrl::class, 'getNotif']);
+
+        Route::get('/student/announcement', [StudentMainCtrl::class, 'announcementIndex']);
+            
     });
 
      //parents routes
@@ -99,8 +112,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::put('/admin/faculty/update/{id}', [AdminController::class, 'updateSingleFacultyRecord'])->name('admin.faculty.update');
         // Route to delete the faculty record
         Route::delete('/admin/faculty/{id}', [AdminController::class, 'deleteFacultyRecord'])->name('admin.faculty.delete');
-
-
     });
 
     Route::middleware(['checkRole:staff'])->group(function() {
@@ -138,6 +149,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/faculty/event/add', [FacultyTaskCtrl::class, 'store'])->name('add.event');
         Route::put('/faculty/event/edit/{id}', [FacultyTaskCtrl::class, 'edit'])->name('edit.event');
 
+        Route::get('/faculty/event/attencance/{id}', [FacultyTaskCtrl::class, 'eventAttendance'])->name('attendance.event');
+
         Route::get('/faculty/notification/list', [FacNotifCtrl::class, 'index']);
 
         Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
@@ -159,8 +172,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/faculty/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
         Route::delete('/faculty/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
 
-        Route::get('/faculty/student/list', function(){
-            return view("faculty.students");
-         });
+        Route::post('/faculty/instructor/update/{id}', [FacGradeCtrl::class, 'updateInstructor'])->name('update.instructor');
+
+        Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
+        Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
+
+
     });
 });

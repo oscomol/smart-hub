@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-                                          <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+                                          <button type="submit" class="btn btn-primary btn btn-sm memo">Save</button>
                                         </div>
                                       </div>
                                     </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FacNotif;
 use App\Models\Memo;
+use App\Models\Notification;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -26,15 +28,30 @@ class FacMemoCtrl extends Controller
         $memo = Memo::create($validated);
 
         if($memo){
-            FacNotif::create([
-                "message" => "New memo added: $request->memo",
+            $notification = FacNotif::create([
+                "message" => "New announcement: $request->announcement",
                 "isNew" => "Y",
-                "type" => "MEMO",
+                "type" => "ANNOUNCEMENT",
                 "faculty_id" => $memo->id
             ]);
+
+            if ($notification) {
+                $userIds = User::where('userType', 'administrator')->pluck('id');
+            
+                if ($userIds->isNotEmpty()) {
+                    $notifications = $userIds->map(function ($userId) use ($notification) {
+                        return [
+                            "user_id" => $userId,
+                            "notification_id" => $notification->id,
+                        ];
+                    });
+            
+                    Notification::insert($notifications->toArray());
+                }
+            }
         }
 
-        return back()->with('success', "Announcement updated successfully");
+        return back()->with('success', "Memo added successfully");
 
        } catch (ValidationException $e) {
         return back()->with('error', "Form validation failed");
@@ -52,7 +69,7 @@ class FacMemoCtrl extends Controller
     
             $memo = Memo::find($request->id)->update($validated);
     
-            return back()->with('success', "Announcement updated successfully");
+            return back()->with('success', "Memo updated successfully");
     
            } catch (ValidationException $e) {
             return back()->with('error', "Form validation failed");

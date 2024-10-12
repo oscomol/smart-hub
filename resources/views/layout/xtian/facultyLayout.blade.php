@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,7 +25,7 @@
         </div>
       
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark">
+        <nav class="main-header navbar navbar-expand">
           <!-- Left navbar links -->
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -38,19 +39,19 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-              <img src="{{ url('/photos/logo.png') }}" alt="facultyLTE Logo" class="img-circle elevation-3" style="opacity: .8; width: 40px; height: 40px;">
-              <span class="brand-text font-weight-light">CRSystem</span>
+              {{-- <img src="{{ url('/photos/logo.png') }}" alt="facultyLTE Logo" class="img-circle elevation-3" style="opacity: .8; width: 40px; height: 40px;"> --}}
+              <span class="brand-text font-weight-light">LOGO</span>
             </a>
         
             <!-- Sidebar -->
             <div class="sidebar">
               <!-- Sidebar user panel (optional) -->
               <div class="user-panel mt-3 pb-2 mb-3 d-flex">
-                <div class="image">
+                {{-- <div class="image">
                   <img src="{{ url('/photos/userLogin.png') }}" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                  {{-- <a href="#" class="d-block">{{$user->name}}</a> --}}
+                </div> --}}
+                <div class="info text-light">
+                  FACULTY
                 </div>
               </div>
         
@@ -70,17 +71,26 @@
                     </li>
 
                     <li class="nav-item">
-                      <a href="{{url('/faculty/grade-section/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
-                        <i class="nav-icon far fa-calendar"></i>
+                      <a href="{{url('/faculty/grade-section/list')}}" class="nav-link {{ request()->is('faculty/grade-section/list') ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-university"></i>
                         <p>
                           Class Management
                         </p>
                       </a>
                     </li>
 
+                    <li class="nav-item">
+                      <a href="{{url('/faculty/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-graduation-cap"></i>
+                        <p>
+                          Student Management
+                        </p>
+                      </a>
+                    </li>
+
                   <li class="nav-item">
                     <a href="{{url('/faculty/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
-                      <i class="nav-icon far fa-calendar"></i>
+                      <i class="nav-icon fa fa-group"></i>
                       <p>
                         Faculties
                       </p>
@@ -96,7 +106,7 @@
                   </li>
                   <li class="nav-item">
                     <a href="{{url('/faculty/announcement/list')}}" class="nav-link {{ request()->is('faculty/announcement/list') ? 'active' : '' }}">
-                      <i class="nav-icon far fa-bell"></i>
+                      <i class="nav-icon fa fa-bullhorn"></i>
                       <p>
                         Announcement
                       </p>
@@ -104,7 +114,7 @@
                   </li>
                   <li class="nav-item">
                     <a href="{{url('/faculty/memo/list')}}" class="nav-link {{ request()->is('faculty/memo/list') ? 'active' : '' }}">
-                      <i class="nav-icon far fa-bell"></i>
+                      <i class="nav-icon fa fa-send"></i>
                       <p>
                         Memo
                       </p>
@@ -157,6 +167,26 @@
       </div>
 
      @vite(['resources/js/app.js'])
+
+     @if (session('success'))
+     <script>
+         Swal.fire({
+             icon: "success",
+             text: "{{ session('success') }}",
+             timer: 3000
+         });
+     </script>
+ @endif
+ 
+ @if (session('error'))
+     <script>
+         Swal.fire({
+             icon: "error",
+             text: "{{ session('error') }}",
+             timer: 3000
+         });
+     </script>
+ @endif
 
      @yield('script')
 

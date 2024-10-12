@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassSchedule;
+use App\Models\Enrol;
+use App\Models\Faculty;
 use App\Models\Grade;
+use App\Models\Instruc;
+use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -66,10 +70,25 @@ class FacGradeCtrl extends Controller
     public function shedule(Request $request){
         $grades = Grade::all();
 
+        $faculties = Faculty::all();
 
         $curId = $request->id;
 
         $grade = Grade::find($curId);
+
+        $instructor = Instruc::where('grade_id', $curId)->first();
+
+        if($instructor){
+            $instructor = Faculty::where('id', $instructor->instructor_id)->first();
+        }
+
+        $students = Enrol::where('grade_id', $curId)->get();
+
+        $students = $students->map(function($item){
+            $studDetails = Student::where('lrn', $item->student_id)->first();
+
+            return $studDetails;
+        });
 
         $days = [
             ["day" => "Monday", "startAt" => null, "endAt" => null],
@@ -92,7 +111,7 @@ class FacGradeCtrl extends Controller
         }, $days);
         
 
-        return view("faculty.schedules", compact('grades', 'days', 'curId', 'grade'));
+        return view("faculty.schedules", compact('grades', 'days', 'curId', 'grade', 'faculties', 'instructor', 'students'));
     }
 
     public function updateSchedule(Request $request){
@@ -131,6 +150,73 @@ class FacGradeCtrl extends Controller
             ->delete();
             return back()->with('success', "Memo deleted successfully");
         }catch(Exception){
+            return back()->with('error', "Something went wrong");
+        }
+    }
+
+    public function updateInstructor(Request $request){
+        try{
+
+            $isExist = Instruc::where('grade_id', $request->id)->first();
+
+            if($isExist){
+                $isExist->update(["instructor_id" => $request->instructorId]);
+            }else{
+                Instruc::create([
+                    "grade_id" => $request->id,
+                    "instructor_id" => $request->instructorId
+                ]);
+            }
+
+            return back()->with('success', "Memo deleted successfully");
+
+        }catch(Exception){
+            return back()->with('error', "Something went wrong");
+        }
+    }
+
+    public function studentIndex(){
+
+        $students = Student::all();
+        $grades = Grade::all();
+
+        $students = $students->map(function($item){
+
+            $enrol = Enrol::where('student_id', $item->lrn)->first();
+
+            if($enrol){
+                $item->grade = Grade::where('id', $enrol->grade_id)->first();
+            }
+
+            return $item;
+        });
+
+        return view("faculty.students", compact('students', 'grades'));
+    }
+
+    public function updateEnroll(Request $request){
+        try{
+            
+            
+            $isEnrolled = Enrol::where('student_id', $request->studentId)->first();
+
+            if($isEnrolled){
+                if($request->id == "0"){
+                    $isEnrolled->delete();
+                }else{
+                    $isEnrolled->update([
+                        "grade_id" => $request->id
+                    ]);
+                }
+            }else{
+                Enrol::create([
+                    "grade_id" => $request->id, "student_id" => $request->studentId
+                ]);
+            }
+
+            return back()->with('success', "Success");
+
+        }catch(Exception $err){
             return back()->with('error', "Something went wrong");
         }
     }
