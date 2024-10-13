@@ -16,7 +16,10 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{{url('/student')}}">LOGO</a>
+        <a class="navbar-brand" href="{{url('/student')}}">
+            <img src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" height="40" width="40">
+            SSDH
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,20 +27,45 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{url('/student')}}">Schedule</a>
+                <li class="nav-item">
+
+                    <a class="nav-link {{ request()->is('student') ? 'active' : '' }}" href="{{url('/student')}}">Schedule</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/student/event')}}">Events</a>
+                    <a class="nav-link {{ request()->is('student/event') ? 'active' : '' }}" href="{{url('/student/event')}}">Events</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/student/announcement')}}">Announcement</a>
+                    <a class="nav-link {{ request()->is('student/announcement') ? 'active' : '' }}" href="{{url('/student/announcement')}}">Announcement</a>
                 </li>
                 <li class="nav-item notif">
-                    <a class="nav-link" href="{{url('/student/notification')}}">Notification
+                    <a class="nav-link {{ request()->is('student/notification') ? 'active' : '' }}" href="{{url('/student/notification')}}">Notification
                         <span class="badge badge-danger notifC"></span>
                     </a>
                 </li>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-tool dropdown-toggle text-bold" data-toggle="dropdown">
+                    {{$user->lrn}}
+                    </button>
+                    
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a href="{{url('/student/info')}}" class="dropdown-item">
+                        <li class="fa fa-user mr-2"></li>
+                        Student Info
+                    </a>
+                    <form action="{{url('/logout')}}" method="POST">
+                        @csrf
+                        @method('post')
+                        <button type="submit" href="#" class="dropdown-item">
+                            <li class="fa fa-lock mr-2"></li>
+                            Logout
+                        </button>
+                    </form>
+                    </div>
+                </div>
+
+               
+
             </ul>
             {{-- <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

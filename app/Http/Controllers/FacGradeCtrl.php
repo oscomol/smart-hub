@@ -11,9 +11,11 @@ use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Traits\LogUserActivityTrait;
 
 class FacGradeCtrl extends Controller
 {
+    use LogUserActivityTrait;
     public function index(){
         $grades = Grade::all();
 
@@ -29,6 +31,8 @@ class FacGradeCtrl extends Controller
             ]);
 
             $grade = Grade::create($validated);
+
+            $this->logActivity("Added a new grade and section: Grade $request->grade - $request->section");
           
             return back()->with('success', "Grade updated successfully");
     
@@ -48,6 +52,8 @@ class FacGradeCtrl extends Controller
             ]);
 
             $grade = Grade::find($request->id)->update($validated);
+
+            $this->logActivity("Updated grade and section: Grade $request->grade - $request->section");
           
             return back()->with('success', "Grade updated successfully");
     
@@ -60,8 +66,10 @@ class FacGradeCtrl extends Controller
 
     public function destroy(Request $request){
         try{
-            Grade::find($request->gradeId)->delete();
-            return back()->with('success', "Memo deleted successfully");
+            $grade = Grade::find($request->gradeId);
+            $this->logActivity("Added a new grade and section: Grade $grade->grade - $grade->section");
+            $grade->delete();
+            return back()->with('success', "Success");
         }catch(Exception){
             return back()->with('error', "Something went wrong");
         }
@@ -134,7 +142,7 @@ class FacGradeCtrl extends Controller
                 ClassSchedule::create($validated);
             }
 
-            return back()->with('success', "Memo deleted successfully");
+            return back()->with('success', "Success");
 
         } catch (ValidationException $e) {
             return back()->with('error', "Form validation failed");
@@ -148,7 +156,7 @@ class FacGradeCtrl extends Controller
             ClassSchedule::where('grade_id', $request->id)
             ->where('day', $request->day)
             ->delete();
-            return back()->with('success', "Memo deleted successfully");
+            return back()->with('success', "Success");
         }catch(Exception){
             return back()->with('error', "Something went wrong");
         }
@@ -168,7 +176,7 @@ class FacGradeCtrl extends Controller
                 ]);
             }
 
-            return back()->with('success', "Memo deleted successfully");
+            return back()->with('success', "Success");
 
         }catch(Exception){
             return back()->with('error', "Something went wrong");

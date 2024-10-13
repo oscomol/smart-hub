@@ -13,6 +13,7 @@ use App\Http\Controllers\FacMemoCtrl;
 use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
 use App\Http\Controllers\StudentMainCtrl;
+use App\Http\Controllers\UserLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,10 +74,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/admin/staff', [AdminController::class, 'staff'])->name('admin.staff');
+        Route::get('/admin/logs', action: [UserLogController::class, 'logs'])->name('admin.logs');
         // user management
         Route::post('/admin/account/register', [AdminController::class, 'register'])->name('admin.account.register');
         Route::get('/admin/accounts/edit/{id}', [AdminController::class, 'edit'])->name('admin.account.edit');
-        Route::post('/admin/accounts/update/{id}', [AdminController::class, 'update'])->name('admin.account.update');
+        Route::put('/admin/accounts/update/{id}', [AdminController::class, 'update'])->name('admin.account.update');
         Route::delete('/admin/accounts/delete/{id}', [AdminController::class, 'destroy'])->name('admin.account.delete');
 
         // student management
@@ -94,7 +96,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/students/{studentId}/medical', [AdminController::class, 'storeMedical'])->name('medical.store');
         Route::post('/students/{studentId}/disciplinary', [AdminController::class, 'storeDisciplinary'])->name('disciplinary.store');
         Route::get('/students/{id}', [AdminController::class, 'show'])->name('students.show');
-       
 
         #faculty management routes
         // Route to display the faculty listing
@@ -111,6 +112,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::put('/admin/faculty/update/{id}', [AdminController::class, 'updateSingleFacultyRecord'])->name('admin.faculty.update');
         // Route to delete the faculty record
         Route::delete('/admin/faculty/{id}', [AdminController::class, 'deleteFacultyRecord'])->name('admin.faculty.delete');
+
+
     });
 
     Route::middleware(['checkRole:staff'])->group(function() {

@@ -1,5 +1,9 @@
 @extends('layout.xtian.studentLayout')
 
+@section('title')
+    Event
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row mt-5">

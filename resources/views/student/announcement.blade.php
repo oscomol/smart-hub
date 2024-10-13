@@ -1,5 +1,8 @@
 @extends('layout.xtian.studentLayout')
 
+@section('title')
+    Announcement
+@endsection
 
 @section('content')
     <div class="container">

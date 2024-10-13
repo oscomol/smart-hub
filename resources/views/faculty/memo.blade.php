@@ -69,7 +69,7 @@
                                             @csrf
                                             @method("delete")
                                             <input type="hidden" value="{{$item->id}}" name="memoId">
-                                            <button type="submit" class="btn btn-danger  btn btn-sm">Delete</button>
+                                            <button type="submit" class="processing btn btn-danger  btn btn-sm">Delete</button>
                                           </form>
                                         </div>
                                       </div>
@@ -78,32 +78,34 @@
                               </div>
 
 
-                                <form action="{{route('edit.memo', ['id' => $item->id])}}" method="POST">
-                                    @csrf
-                                    @method('put')
-                                <div class="modal fade" id="edit-memo-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Edit Memo</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label for="memo-{{$item->id}}" class="form-label">Memorandom</label>
-                                                <textarea class="form-control" id="memo-{{$item->id}}" name="memo">{{$item->memo}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-                                          <button type="submit" class="btn btn-primary btn btn-sm memo">Save</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
+                              <!-- Edit Memo Modal -->
+<div class="modal fade" id="edit-memo-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Memo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form action="{{ route('edit.memo', ['id' => $item->id]) }}" method="POST">
+              @csrf
+              @method('put')
+              <div class="modal-body">
+                  <div class="mb-3">
+                      <label for="memo-{{$item->id}}" class="form-label">Memorandum</label>
+                      <textarea class="form-control" id="memo-{{$item->id}}" name="memo">{{ $item->memo }}</textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                  <button type="submit" class="processing btn btn-primary btn-sm">Save</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
 
                             </div>
                           @endforeach
@@ -135,7 +137,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+          <button type="submit" class="processing btn btn-primary btn btn-sm">Save</button>
         </div>
       </div>
     </div>
@@ -155,6 +157,7 @@
             "autoWidth": false,
             "responsive": true,
         });
+
         })
     </script>
 @endsection

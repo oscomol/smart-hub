@@ -11,13 +11,13 @@
 
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $facultyCount }}</h3>
-                        <p>Faculties</p>
+                        <h3>{{ $gradeCount }}</h3>
+                        <p>Grade and Section</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{url('/faculty/grade-section/list')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{url('/faculty/student/list')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
 
@@ -39,25 +39,25 @@
 
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>{{ $parentsCount }}</h3>
-                        <p>Parents</p>
+                        <h3>{{ $eventsCount }}</h3>
+                        <p>Events</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{url('/faculty/task/list')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>{{ $staffCount }}</h3>
-                        <p>Staff</p>
+                        <h3>{{ $memoCount }}</h3>
+                        <p>Memos</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{url('/faculty/memo/list')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
@@ -124,10 +124,10 @@
                             @foreach ($recentStudent as $item)
                             <li class="item">
                                 <div class="product-img">
-                                    <img src="dist/img/default-150x150.png" class="img-size-50">
+                                    <img src="{{asset('img/student.png')}}" class="img-size-50">
                                 </div>
                                 <div class="product-info">
-                                    <a href="javascript:void(0)" class="product-title">{{$item->name}}</a>
+                                    <a  class="product-title">{{$item->name}}</a>
                                     <span class="product-description">
                                         {{$item->learning_modality}}
                                     </span>

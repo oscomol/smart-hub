@@ -1,7 +1,7 @@
 @extends('layout.xtian.facultyLayout')
 
 @section('title')
-    Class Schedule management
+    Class schedule management
 @endsection
 
 @section('content')

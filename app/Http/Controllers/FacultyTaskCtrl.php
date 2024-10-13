@@ -11,9 +11,13 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Traits\LogUserActivityTrait;
 
 class FacultyTaskCtrl extends Controller
 {
+
+    use LogUserActivityTrait;
+
     public function index(){
         $events = FacEvent::all();
 
@@ -41,11 +45,14 @@ class FacultyTaskCtrl extends Controller
 
                 if($event){
                     $notification = FacNotif::create([
-                        "message" => "New announcement: $request->announcement",
+                        "message" => "New announcement: $request->eventName",
                         "isNew" => "Y",
-                        "type" => "ANNOUNCEMENT",
+                        "type" => "Event",
                         "faculty_id" => $event->id
                     ]);
+
+                    $this->logActivity("Added a new event: $request->eventName ");
+
     
                     if ($notification) {
                         $userIds = User::whereIn('userType', ['student', 'administrator'])->pluck('id');
@@ -74,7 +81,9 @@ class FacultyTaskCtrl extends Controller
 
         public function destroy(Request $request){
             try{
-                FacEvent::find($request->eventId)->delete();
+                $event = FacEvent::find($request->eventId);
+                $this->logActivity("Deleted event: $event->eventName ");
+                $event->delete();
                 return back()->with('success', "Event deleted successfully");
             }catch(Exception){
                 return back()->with('error', "Something went wrong");
@@ -93,6 +102,8 @@ class FacultyTaskCtrl extends Controller
                 $event = FacEvent::find($request->id);
 
                 $event->update($validated);
+
+                $this->logActivity("Updated a new event: $request->eventName ");
 
                 return back()->with('success', "Event updated successfully");
 

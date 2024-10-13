@@ -1,7 +1,7 @@
 @extends('layout.xtian.facultyLayout')
 
 @section('title')
-    Class Schedule management
+    Class schedule management
 @endsection
 
 @section('content')
@@ -71,7 +71,7 @@
                                             @csrf
                                             @method("delete")
                                             <input type="hidden" value="{{$item->id}}" name="gradeId">
-                                            <button type="submit" class="btn btn-danger  btn btn-sm">Delete</button>
+                                            <button type="submit" class="processing btn btn-danger  btn btn-sm">Delete</button>
                                           </form>
                                         </div>
                                       </div>
@@ -80,9 +80,7 @@
                               </div>
 
 
-                                <form action="{{route('edit.grade', ['id' => $item->id])}}" method="POST">
-                                    @csrf
-                                    @method('put')
+                               
                                 <div class="modal fade" id="edit-grade-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                       <div class="modal-content">
@@ -92,6 +90,9 @@
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
+                                        <form action="{{route('edit.grade', ['id' => $item->id])}}" method="POST">
+                                          @csrf
+                                          @method('put')
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label for="grade{{$item->id}}" class="form-label">Select Grade</label>
@@ -111,12 +112,12 @@
                                         </div>
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-                                          <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+                                          <button type="submit" class="processing btn btn-primary  btn btn-sm">Save</button>
                                         </div>
+                                      </form>
                                       </div>
                                     </div>
                                   </div>
-                                </form>
                                </div>
 
                            @endforeach
@@ -158,7 +159,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+              <button type="submit" class="processing btn btn-primary  btn btn-sm">Save</button>
             </div>
           </div>
         </div>

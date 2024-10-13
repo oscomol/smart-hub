@@ -84,7 +84,7 @@
                                         </div>
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-                                          <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+                                          <button type="submit" class="processing btn btn-primary  btn btn-sm">Save</button>
                                         </div>
                                       </div>
                                     </div>
@@ -110,7 +110,7 @@
                                             @csrf
                                             @method("delete")
                                             <input type="hidden" value="{{$item->id}}" name="eventId">
-                                            <button type="submit" class="btn btn-danger  btn btn-sm">Delete</button>
+                                            <button type="submit" class="processing btn btn-danger  btn btn-sm">Delete</button>
                                           </form>
                                         </div>
                                       </div>
@@ -157,7 +157,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary btn btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary  btn btn-sm">Save</button>
+              <button type="submit" class="processing btn btn-primary  btn btn-sm">Save</button>
             </div>
           </div>
         </div>

@@ -10,9 +10,12 @@ use App\Models\User;
 use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Http\Request;
+use App\Traits\LogUserActivityTrait;
 
 class FacAnnouncementCtrl extends Controller
 {
+
+    use LogUserActivityTrait;
     public function index(){
         $announcements = FacAnnouncement::all();
         return view("faculty.announcement", compact('announcements'));
@@ -34,6 +37,9 @@ class FacAnnouncementCtrl extends Controller
                     "type" => "ANNOUNCEMENT",
                     "faculty_id" => $event->id
                 ]);
+
+                $this->logActivity("Added a new announcment: $request->announcement ");
+
 
                 if ($notification) {
                     $userIds = User::whereIn('userType', ['student', 'administrator'])->pluck('id');
@@ -70,6 +76,8 @@ class FacAnnouncementCtrl extends Controller
 
             $announcement = FacAnnouncement::find($request->id)->update($validated);
 
+            $this->logActivity("Updated announcment: $request->announcement ");
+
             return back()->with('success', "Announcement updated successfully");
 
         } catch (ValidationException $e) {
@@ -81,7 +89,9 @@ class FacAnnouncementCtrl extends Controller
 
     public function destroy(Request $request){
         try{
-            FacAnnouncement::find($request->eventId)->delete();
+            $ann = FacAnnouncement::find($request->eventId);
+            $this->logActivity("Updated announcment: $ann->announcement ");
+            $ann->delete();
             return back()->with('success', "Announcement deleted successfully");
         }catch(Exception){
             return back()->with('error', "Something went wrong");

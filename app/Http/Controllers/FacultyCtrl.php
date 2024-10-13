@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FacEvent;
 use App\Models\Faculty;
+use App\Models\Grade;
+use App\Models\Memo;
 use App\Models\Qualification;
 use App\Models\Student;
 use App\Models\TeachingAssign;
@@ -148,14 +151,14 @@ class FacultyCtrl extends Controller
      }
 
      public function facultyDash(Request $request){
-        $facultyCount = User::where("userType", "faculty")->count();
+        $gradeCount = Grade::all()->count();
         $studentCount = User::where("userType", "student")->count();
-        $parentsCount = User::where("userType", "parents")->count();
-        $staffCount = User::where("userType", "staff")->count();
+        $eventsCount = FacEvent::all()->count();
+        $memoCount = Memo::all()->count();
 
         $recentFaculty = Faculty::latest()->limit(10)->get();
         $recentStudent = Student::latest()->limit(8)->get();
 
-        return view("faculty.dashboard", compact('facultyCount', 'studentCount', 'parentsCount', 'staffCount', 'recentFaculty', 'recentStudent'));
+        return view("faculty.dashboard", compact('gradeCount', 'studentCount', 'eventsCount', 'memoCount', 'recentFaculty', 'recentStudent'));
      }
 }

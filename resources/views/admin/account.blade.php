@@ -8,57 +8,61 @@
     </ol>
 </nav>
 @endsection
-
+@section('title')
+    User Accounts
+@endsection
 @section('adminContent')
-<div class="container mt-4">
-
+<div class="container-fluid">
     @include('partials.message')
-    
-    <h2>Accounts</h2>
-    <p>Manage users account on this page.</p>
-    <div class="title-line"></div>
-    
-    <!-- Button to Add User -->
-    <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#registerUserModal">
-        Add New User
-    </button>
-   
-    
-    <!-- Users Table -->
-    <table id="users-table" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>LRN(student)</th>
-                <th>User Type</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-                <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->username }}</td>
-                    <td>{{ $user->lrn }}</td>
-                    <td>{{ $user->userType }}</td>
-                    <td>{{ $user->created_at }}</td>
-                    <td>{{ $user->updated_at }}</td>
-                    <td>
-                        <button class="btn btn-warning edit-user" data-id="{{ $user->id }}">Edit</button>
-                    <form action="{{ route('admin.account.delete', $user->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
-                    </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">User Accounts</h3>
+                    <button type="button" class="btn btn-primary mb-2 float-right" data-toggle="modal" data-target="#registerUserModal">
+                        Add New User
+                    </button>
+                </div>
+                <div class="card-body">
+                    <table id="users-table" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>LRN(student)</th>
+                                <th>User Type</th>
+                                <th>Created at</th>
+                                <th>Updated at</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $user->username }}</td>
+                                    <td>{{ $user->lrn }}</td>
+                                    <td>{{ $user->userType }}</td>
+                                    <td>{{ $user->created_at }}</td>
+                                    <td>{{ $user->updated_at }}</td>
+                                    <td>
+                                        <button class="btn btn-warning edit-user" data-id="{{ $user->id }}">Edit</button>
+                                    <form action="{{ route('admin.account.delete', $user->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                                    </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+@endsection
 <!-- Add Modal -->
 <div class="modal fade" id="registerUserModal" tabindex="-1" role="dialog" aria-labelledby="registerUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -134,7 +138,7 @@
             <div class="modal-body">
                 <form id="editUserForm" action="" method="POST">
                     @csrf
-                    @method('POST')
+                    @method('PUT')
 
                     <!-- Username Field -->
                     <div class="form-group">
@@ -184,23 +188,9 @@
         </div>
     </div>
 </div>
-<style>
-    .title-line {
-        width: 100%; 
-        height: 2px;
-        background-color: #000; 
-        margin-top: 5px;
-        margin-bottom: 15px; 
-        border-radius: 1px; 
-    }
-</style>
-<!-- Include DataTables CSS and JS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
+@section('script')
 <!-- DataTables Initialization -->
-<script>
+<script type="module">
     $(document).ready(function() {
         $('#users-table').DataTable();
     });

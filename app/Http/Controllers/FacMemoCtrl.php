@@ -6,12 +6,16 @@ use App\Models\FacNotif;
 use App\Models\Memo;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\UserLog;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Traits\LogUserActivityTrait;
 
 class FacMemoCtrl extends Controller
 {
+
+    use LogUserActivityTrait;
     public function index(){
         $memos = Memo::all();
 
@@ -21,6 +25,8 @@ class FacMemoCtrl extends Controller
     public function store(Request $request){
        try{
 
+        $user = auth()->user();
+
         $validated = $request->validate([
             "memo" => 'required'
         ]);
@@ -29,11 +35,13 @@ class FacMemoCtrl extends Controller
 
         if($memo){
             $notification = FacNotif::create([
-                "message" => "New announcement: $request->announcement",
+                "message" => "New memo: $request->memo",
                 "isNew" => "Y",
-                "type" => "ANNOUNCEMENT",
+                "type" => "Memo",
                 "faculty_id" => $memo->id
             ]);
+
+            $this->logActivity("Added a new memo: $request->memo ");
 
             if ($notification) {
                 $userIds = User::where('userType', 'administrator')->pluck('id');
@@ -68,6 +76,8 @@ class FacMemoCtrl extends Controller
             ]);
     
             $memo = Memo::find($request->id)->update($validated);
+
+            $this->logActivity("Updated memo: $request->memo ");
     
             return back()->with('success', "Memo updated successfully");
     
@@ -80,7 +90,12 @@ class FacMemoCtrl extends Controller
 
     public function destroy(Request $request){
         try{
-            Memo::find($request->memoId)->delete();
+           $memo = Memo::find($request->memoId);
+
+            $this->logActivity("Deleted memo: $memo->memo ");
+
+            $memo->delete();
+
             return back()->with('success', "Memo deleted successfully");
         }catch(Exception){
             return back()->with('error', "Something went wrong");
