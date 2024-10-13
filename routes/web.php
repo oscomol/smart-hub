@@ -28,6 +28,8 @@ use App\Http\Controllers\StudentMainCtrl;
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
+Route::get('/faculty/logout', [LogoutController::class, 'logout'])->name('logout');
+
 Route::match(['GET', 'POST'],'/login/{userType}', [LoginCtrl::class,'login'])->name('login');
 
 Route::get('/', function () {
@@ -41,12 +43,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     //student routes
     Route::middleware(['checkRole:student'])->group(function() {
-        Route::get('/student', function(){
 
-           
-
-            return view('student.schedule');
-        });
+        Route::get('/student', [StudentMainCtrl::class, 'scheduleIndex']);
 
         Route::get('/student/event', [StudentMainCtrl::class, 'eventIndex']);
         Route::post('/student/event/in/{id}', [StudentMainCtrl::class, 'eventIn'])->name('event.in');
@@ -56,6 +54,7 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/student/announcement', [StudentMainCtrl::class, 'announcementIndex']);
             
+        Route::get('/student/info', [StudentMainCtrl::class, 'show']);
     });
 
      //parents routes
