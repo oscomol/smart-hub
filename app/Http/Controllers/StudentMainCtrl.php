@@ -181,7 +181,7 @@ class StudentMainCtrl extends Controller
         $user = auth()->user();
         $userId = auth()->user()->id;
 
-        $notification = Notification::where('user_id', $userId)->get();
+        $notification = Notification::where('user_id', $userId)->orderBy('id', 'desc')->get();
 
         $notifData = $notification->map(function($notif){
             $data = FacNotif::where('id', $notif->notification_id)->first();
