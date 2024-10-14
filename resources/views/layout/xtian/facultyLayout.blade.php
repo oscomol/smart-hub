@@ -121,13 +121,14 @@
                   </li>
 
                   <li class="nav-item">
-                    <a href="{{url('/faculty/logout')}}"  class="nav-link">
-                      <i class="nav-icon fa fa-lock"></i>
-                      <p>
-                        Logout
-                      </p>
+                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
                     </a>
-                  </li>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
                   
                   {{-- <li class="nav-item">
                     <a href="{{url('/faculty/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">

@@ -55,7 +55,7 @@
                     <p><strong>Barangay:</strong> {{ $student->barangay }}</p>
                 </div>
                 <div class="col-md-4">
-                    <p><strong>Municipality:</strong> {{ $student->municipality }}</p>
+                    <p><strong>Municipality/City:</strong> {{ $student->municipality }}</p>
                 </div>
             </div>
 

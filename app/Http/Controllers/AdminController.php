@@ -76,10 +76,31 @@ class AdminController extends Controller
             'remarks' => $request->remarks,
         ]);
 
+        // Automatically create a user account for the student
+         $this->registerStudentUser($student);
+
         // Log user activity
         $this->logActivity('Added a new student: ' . $student->name);
 
         return redirect()->back()->with('insert_success', 'Student information saved successfully.');
+    }
+
+    # Method to handle the registration of new users for students
+    private function registerStudentUser(Student $student)
+    {
+        # Create a new user for the student
+        $userData = [
+            'username' => $student->name, // Use student's name as username
+            'lrn' => $student->lrn,
+            'password' => Hash::make('studentpassword'), // default password
+            'userType' => 'student',
+        ];
+
+        # Save the new user
+        $user = User::create($userData);
+
+        # Log the activity
+        $this->logActivity('Registered a new user for student: ' . $user->username);
     }
 
     #Funtion to Update the tables
@@ -372,21 +393,18 @@ class AdminController extends Controller
         return view('admin.staff');
     }
 
-    // public function logs() {
-    //     return view('admin.logs');
-    // }
-
-    public function account() {
-        $users = User::all(); #Fetch all users
-        return view('admin.account', compact('users'));
-    }
-
+    
     public function reports() {
         return view('admin.reports');
     }
 
     public function settings() {
         return view('admin.settings');
+    }
+
+    public function account() {
+        $users = User::all(); #Fetch all users
+        return view('admin.account', compact('users'));
     }
 
 

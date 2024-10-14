@@ -33,7 +33,7 @@
                                 <th>Student Name</th>
                                 <th>Contact Number</th>
                                 <th>Barangay</th>
-                                <th>Municipality</th>
+                                <th>Municipality/City</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -241,7 +241,7 @@
                             <input type="text" name="barangay" class="form-control" id="edit_barangay" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="edit_municipality">Municipality:</label>
+                            <label for="edit_municipality">Municipality/City:</label>
                             <input type="text" name="municipality" class="form-control" id="edit_municipality" required>
                         </div>
                     </div>

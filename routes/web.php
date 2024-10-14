@@ -12,15 +12,12 @@ use App\Http\Controllers\FacGradeCtrl;
 use App\Http\Controllers\FacMemoCtrl;
 use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
-<<<<<<< HEAD
 use App\Http\Controllers\StudentMainCtrl;
-use App\Http\Controllers\UserLogController;
-=======
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\GovernanceController;
-use App\Models\Governance;
->>>>>>> d6d4117 (Added SchoolController and related models, views, and activity log function; completed administrative modules)
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +33,7 @@ use App\Models\Governance;
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::get('/faculty/logout', [LogoutController::class, 'logout'])->name('logout');
+
 
 Route::match(['GET', 'POST'],'/login/{userType}', [LoginCtrl::class,'login'])->name('login');
 
@@ -81,11 +78,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/admin/staff', [AdminController::class, 'staff'])->name('admin.staff');
-<<<<<<< HEAD
-        Route::get('/admin/logs', action: [UserLogController::class, 'logs'])->name('admin.logs');
-=======
         Route::get('/admin/logs', [UserLogController::class, 'logs'])->name('admin.logs');
->>>>>>> d6d4117 (Added SchoolController and related models, views, and activity log function; completed administrative modules)
+
         // user management
         Route::post('/admin/account/register', [AdminController::class, 'register'])->name('admin.account.register');
         Route::get('/admin/accounts/edit/{id}', [AdminController::class, 'edit'])->name('admin.account.edit');
@@ -160,15 +154,9 @@ Route::group(['middleware' => 'auth'], function() {
      //faculty routes  
     Route::middleware(['checkRole:faculty'])->group(function() {
         Route::get('/faculty', [FacultyCtrl::class, 'facultyDash']);
-       
-
         Route::get('/faculty/list', [FacultyCtrl::class, 'index']);
-
         Route::get('/faculty/{id}', [FacultyCtrl::class, 'show']);
         Route::get('/faculty/edit/{id}', [FacultyCtrl::class, 'editView']);
-
-       
-        
         Route::put('/faculty/edit/{id}/save', [FacultyCtrl::class, 'update'])->name('faculty.edit');
 
         Route::get('/faculty/qualification/{id}', [FacultyCtrl::class, 'qualificationShow']);
@@ -190,15 +178,15 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/faculty/notification/list', [FacNotifCtrl::class, 'index']);
 
-        Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
-        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
-        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
-        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
-
         Route::get('/faculty/memo/list', [FacMemoCtrl::class, 'index']);
         Route::post('/faculty/memo/add', [FacMemoCtrl::class, 'store'])->name('add.memo');
         Route::put('/faculty/memo/edit/{id}', [FacMemoCtrl::class, 'edit'])->name('edit.memo');
         Route::delete('/faculty/memo/delete', [FacMemoCtrl::class, 'destroy'])->name('delete.memo');
+        
+        Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
+        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
+        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
+        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
 
         Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'index']);
         Route::post('/faculty/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
@@ -213,7 +201,5 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
         Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
-
-
     });
 });
