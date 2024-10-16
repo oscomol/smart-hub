@@ -19,10 +19,10 @@
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" height="60" width="60"><br>
-            <p class="animation__wobble">Smart School Data Hub</p>
+            <p class="animation__wobble">Smart School Data Hub......</p>
         </div>
 
-        <!-- Navbar -->
+       <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light py-3">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
@@ -32,141 +32,40 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <h5 class="py-2">Old Sagay National High School</h5>
                 </li>
-                
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Administrative Details
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                        <a class="dropdown-item" href="{{ route('schools.index') }}">School Information</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('governance.index') }}">Governance and Leadership</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('facilities.index') }}">School Facilities</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('procedures.index')}}">Administrative Procedures</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('policies.index')}}">Policies</a>
-                </li>
+
             </ul>
 
-            <!-- Right navbar links -->
+           <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
+
+                <li class="nav-item float-right ms-4">
+                    <a class="nav-link text-dark" href="{{ route('chat.show') }}">
+                        <i class="far fa-comments"></i> Chat
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
                 </li>
 
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                {{-- <li class="nav-item float-right ms-4">
+                    <a class="nav-link text-dark" href="#">
+                        <i class="far fa-bell"></i> Notification
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
-                </li>
+                </li> --}}
 
-                <!-- Sidebar Control Button -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i class="fas fa-th-large"></i></a>
-                </li>
             </ul>
+
         </nav>
         <!-- /.navbar -->
 
 
         <!-- Sidebar -->
         <aside class="main-sidebar elevation-4">
-            <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <img src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" class="img-circle elevation-3">
-                <span class="brand-text font-weight-light"></span>Smart Data Hub
+            <a href="#" class="brand-link d-block text-center">
+                <img src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" class="img-fluid img-circle elevation-3" style="max-width: 150px;"> <!-- Adjust width if needed -->
             </a>
         
             <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-2 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{{ asset('img/default-icon.jpg') }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
+                <div class="user-panel mt-3 pb-2 mb-3 text-center"> <!-- Center the content -->
                     <div class="info">
-                        <a href="#" class="d-block">Sample Name</a>
+                        <h4>Smart Data Hub</h4>
                     </div>
                 </div>
         
@@ -220,6 +119,37 @@
                         </li>
                         <!-- End of Records Dropdown -->
 
+                        <li class="nav-item {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Administrative Details
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('schools.index') }}" class="nav-link {{ request()->is('schools*') ? 'active' : '' }}">
+                                        <i class="fas fa-school nav-icon"></i>
+                                        <p>School Information</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('governance.index') }}" class="nav-link {{ request()->is('governance*') ? 'active' : '' }}">
+                                        <i class="fas fa-user-tie nav-icon"></i>
+                                        <p>Governance and Leadership</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('facilities.index') }}" class="nav-link {{ request()->is('facilities*') ? 'active' : '' }}">
+                                        <i class="fas fa-building nav-icon"></i>
+                                        <p>School Facilities</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        
         
                         <li class="nav-item">
                             <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->is('admin/logs') ? 'active' : '' }}">
@@ -235,12 +165,30 @@
                             </a>
                         </li>
         
-                        <li class="nav-item">
-                            <a href="{{ route('admin.settings') }}" class="nav-link {{ request()->is('admin/settings') ? 'active' : '' }}">
+                        <li class="nav-item {{ request()->is('procedures*') || request()->is('policies*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('procedures*') || request()->is('policies*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cogs"></i>
-                                <p>Settings</p>
+                                <p>
+                                    Settings
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('procedures.index') }}" class="nav-link {{ request()->is('procedures*') ? 'active' : '' }}">
+                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <p>Administrative Procedures</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('policies.index') }}" class="nav-link {{ request()->is('policies*') ? 'active' : '' }}">
+                                        <i class="fas fa-file-alt nav-icon"></i>
+                                        <p>Policies</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+                                            
 
                         <li class="nav-item">
                             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -294,6 +242,7 @@
     <footer class="main-footer">
         <strong>&copy; {{ date('Y') }} Old Sagay National High School.</strong> All rights reserved.
     </footer>
+    
 </body>
 
 </html>

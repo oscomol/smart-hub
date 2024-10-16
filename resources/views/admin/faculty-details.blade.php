@@ -9,11 +9,12 @@
     </ol>
 </nav>
 @endsection
-
+@section('title')
+    Faculty Details
+@endsection
 @section('adminContent')
-<div class="container">
-    <h2>{{ $faculty->name }}'s Details</h2>
-    <p>This record belongs to the name above.</p>
+<div class="container-fluid">
+    <h2>{{ $faculty->name }}</h2>
      <div class="title-line"></div>
 
     <div class="row">

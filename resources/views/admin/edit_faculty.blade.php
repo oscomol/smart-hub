@@ -9,11 +9,11 @@
             </ol>
         </nav>
 @endsection
-
+@section('title')
+    Edit record
+@endsection
 @section('adminContent')
-    <div class="container">
-        <h3>Edit {{ $faculty->name }} Record</h3>
-        <hr>
+    <div class="container-fluid">
         <form action="{{ route('admin.faculty.update', $faculty->id) }}" method="POST">
             @csrf
             @method('PUT')

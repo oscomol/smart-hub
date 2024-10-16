@@ -9,11 +9,11 @@
         </ol>
     </nav>
 @endsection
-
+@section('title')
+ Add New Faculty record
+@endsection
 @section('adminContent')
-<div class="container">
-    <h3>Add New Faculty Records</h3>
-    <hr>
+<div class="container-fluid">
     @include('partials.faculty_form')
 
 </div>

@@ -16,6 +16,7 @@ use App\Http\Controllers\StudentMainCtrl;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\GovernanceController;
+use App\Http\Controllers\ChatController;
 
 
 
@@ -33,7 +34,10 @@ use App\Http\Controllers\GovernanceController;
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-
+// chat
+Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::post('/chat/fetch-messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
 
 Route::match(['GET', 'POST'],'/login/{userType}', [LoginCtrl::class,'login'])->name('login');
 
@@ -141,9 +145,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('policies/edit/{id}',[SchoolController::class, 'editPolicies'])->name('policies.editPolicies');
         Route::post('policies/store',[SchoolController::class, 'storePolicies'])->name('policies.storePolicies');
         Route::put('policies/update/{id}',[SchoolController::class, 'updatePolicies'])->name('policies.updatePolicies');
-        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');
-
+        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');          
     });
+
+
 
     Route::middleware(['checkRole:staff'])->group(function() {
         Route::get('/staff', function(){
