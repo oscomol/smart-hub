@@ -29,7 +29,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
 
-                    <a class="nav-link {{ request()->is('student') ? 'active' : '' }}" href="{{url('/student')}}">Schedule</a>
+                    <a class="nav-link {{ request()->is('student') ? 'active' : '' }}" href="{{url('/student')}}">Grade and Schedule</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('student/event') ? 'active' : '' }}" href="{{url('/student/event')}}">Events</a>

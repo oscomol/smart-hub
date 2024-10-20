@@ -14,6 +14,11 @@ use App\Http\Controllers\FacNotifCtrl;
 use App\Http\Controllers\FacultyTaskCtrl;
 use App\Http\Controllers\StudentMainCtrl;
 use App\Http\Controllers\UserLogController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\GovernanceController;
+use App\Http\Controllers\ChatController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +34,10 @@ use App\Http\Controllers\UserLogController;
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::get('/faculty/logout', [LogoutController::class, 'logout'])->name('logout');
+// chat
+Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::post('/chat/fetch-messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
 
 Route::match(['GET', 'POST'],'/login/{userType}', [LoginCtrl::class,'login'])->name('login');
 
@@ -74,7 +82,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
         Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/admin/staff', [AdminController::class, 'staff'])->name('admin.staff');
-        Route::get('/admin/logs', action: [UserLogController::class, 'logs'])->name('admin.logs');
+        Route::get('/admin/logs', [UserLogController::class, 'logs'])->name('admin.logs');
+
         // user management
         Route::post('/admin/account/register', [AdminController::class, 'register'])->name('admin.account.register');
         Route::get('/admin/accounts/edit/{id}', [AdminController::class, 'edit'])->name('admin.account.edit');
@@ -113,8 +122,33 @@ Route::group(['middleware' => 'auth'], function() {
         // Route to delete the faculty record
         Route::delete('/admin/faculty/{id}', [AdminController::class, 'deleteFacultyRecord'])->name('admin.faculty.delete');
 
-
+        //schools info
+        Route::resource('admin/schools', SchoolController::class);
+        Route::resource('admin/governance', GovernanceController::class); 
+        // facilities
+        Route::get('facilities', [SchoolController::class, 'facilities'])->name('facilities.index');
+        Route::get('facilities/create', [SchoolController::class, 'create'])->name('facilities.create');
+        Route::post('facilities/store', [SchoolController::class, 'storeFacility'])->name('facilities.storeFacility');
+        Route::get('facilities/edit/{id}', [SchoolController::class, 'editFacilities'])->name('facilities.editFacilities');
+        Route::put('facilities/update/{id}', [SchoolController::class, 'updateFacilities'])->name('facilities.updateFacilities');
+        Route::delete('facilities/{id}', [SchoolController::class, 'destroyFacilities'])->name('facilities.destroyFacilities');
+        //procedures
+        Route::get('procedures',[SchoolController::class, 'Procedures'])->name('procedures.index');
+        Route::get('procedures/create',[SchoolController::class, 'createProcedure'])->name('procedures.createProcedure');
+        Route::get('procedures/edit/{id}',[SchoolController::class, 'editProcedure'])->name('procedures.editProcedure');
+        Route::post('procedures/store',[SchoolController::class, 'storeProcedure'])->name('procedures.storeProcedure');
+        Route::put('procedures/update/{id}', [SchoolController::class, 'updateProcedure'])->name('procedures.updateProcedure');
+        Route::delete('procedures/{id}',[SchoolController::class, 'destroyProcedure'])->name('procedures.destroyProcedure');
+        //policies
+        Route::get('policies',[SchoolController::class, 'Policies'])->name('policies.index');
+        Route::get('policies/create',[SchoolController::class, 'createPolicies'])->name('policies.createPolicies');
+        Route::get('policies/edit/{id}',[SchoolController::class, 'editPolicies'])->name('policies.editPolicies');
+        Route::post('policies/store',[SchoolController::class, 'storePolicies'])->name('policies.storePolicies');
+        Route::put('policies/update/{id}',[SchoolController::class, 'updatePolicies'])->name('policies.updatePolicies');
+        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');          
     });
+
+
 
     Route::middleware(['checkRole:staff'])->group(function() {
         Route::get('/staff', function(){
@@ -125,15 +159,9 @@ Route::group(['middleware' => 'auth'], function() {
      //faculty routes  
     Route::middleware(['checkRole:faculty'])->group(function() {
         Route::get('/faculty', [FacultyCtrl::class, 'facultyDash']);
-       
-
         Route::get('/faculty/list', [FacultyCtrl::class, 'index']);
-
         Route::get('/faculty/{id}', [FacultyCtrl::class, 'show']);
         Route::get('/faculty/edit/{id}', [FacultyCtrl::class, 'editView']);
-
-       
-        
         Route::put('/faculty/edit/{id}/save', [FacultyCtrl::class, 'update'])->name('faculty.edit');
 
         Route::get('/faculty/qualification/{id}', [FacultyCtrl::class, 'qualificationShow']);
@@ -155,15 +183,15 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/faculty/notification/list', [FacNotifCtrl::class, 'index']);
 
-        Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
-        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
-        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
-        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
-
         Route::get('/faculty/memo/list', [FacMemoCtrl::class, 'index']);
         Route::post('/faculty/memo/add', [FacMemoCtrl::class, 'store'])->name('add.memo');
         Route::put('/faculty/memo/edit/{id}', [FacMemoCtrl::class, 'edit'])->name('edit.memo');
         Route::delete('/faculty/memo/delete', [FacMemoCtrl::class, 'destroy'])->name('delete.memo');
+        
+        Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
+        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
+        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
+        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
 
         Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'index']);
         Route::post('/faculty/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
@@ -179,11 +207,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
         Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
 
-        //SUBJECT
-        Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
-        Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
-        Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
-
-
+         //SUBJECT
+         Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
+         Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
+         Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
+ 
     });
 });

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassSchedule;
+use App\Models\ClassSubject;
 use App\Models\Enrol;
+use App\Models\EnteredGrade;
 use App\Models\Faculty;
 use App\Models\Grade;
 use App\Models\Instruc;
 use App\Models\Student;
+use App\Models\Subject;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -92,8 +95,25 @@ class FacGradeCtrl extends Controller
 
         $students = Enrol::where('grade_id', $curId)->get();
 
-        $students = $students->map(function($item){
+        $students = $students->map(function($item) use($curId){
+            
             $studDetails = Student::where('lrn', $item->student_id)->first();
+
+            $subjects = ClassSubject::where('grade_id', $curId)->get();
+
+            $subjects = $subjects->map(function($sub)use($item){
+
+                $grade = EnteredGrade::where('lrn', $item->student_id)
+                ->where('grade_id', $sub->id)->first();
+
+                if($grade){
+                    $sub->grade = $grade;
+                }
+
+                return $sub;
+            });
+
+            $studDetails->subject = $subjects;
 
             return $studDetails;
         });
@@ -110,14 +130,21 @@ class FacGradeCtrl extends Controller
             $sched = ClassSchedule::where('day', $day['day'])
                 ->where('grade_id', $curId)
                 ->first();
+            $subjects = ClassSubject::where('grade_id', $curId)
+            ->where('day', $day)->get();
+            if($subjects->count() > 0){
+                $day['subjects'] = $subjects;
+            }
             if ($sched) {
+                
                 $day['startAt'] = $sched->startAt;
                 $day['endAt'] = $sched->endAt;
             }
         
             return $day;
         }, $days);
-        
+
+
 
         return view("faculty.schedules", compact('grades', 'days', 'curId', 'grade', 'faculties', 'instructor', 'students'));
     }
@@ -127,8 +154,10 @@ class FacGradeCtrl extends Controller
             
             $validated = $request->validate([
                 "startAt" => 'required',
-                "endAt" => 'required'
+                "endAt" => 'required',
             ]);
+
+
 
             $isExist = ClassSchedule::where('grade_id', $request->gradeId)
             ->where('day', $request->day)->first();
@@ -224,6 +253,77 @@ class FacGradeCtrl extends Controller
 
             return back()->with('success', "Success");
 
+        }catch(Exception $err){
+            return back()->with('error', "Something went wrong");
+        }
+    }
+
+    public function addSubject(Request $request){
+        try{
+
+            $validated = $request->validate([
+                "subject" => 'required',
+                "startTime" => 'required',
+                "endTime" => 'required'
+            ]);
+
+            $validated["day"] = $request->day;
+            $validated["grade_id"] = $request->id;
+
+            ClassSubject::create($validated);
+
+            return back()->with('success', "Success");
+
+        } catch (ValidationException $e) {
+            return back()->with('error', "Form validation failed");
+            } catch (Exception $e) {
+            return back()->with('error', "Something went wrong");
+           }
+    }
+
+    public function destroySubject(Request $request){
+        try{
+            ClassSubject::find($request->id)->delete();
+            return back()->with('success', "Success");
+
+        }catch (Exception $e) {
+            return back()->with('error', "Something went wrong");
+           }
+    }
+
+    public function addGrade(Request $request){
+        try{
+
+
+            $isExist = EnteredGrade::where('grade_id', $request->subjectId)
+            ->where('lrn', $request->studentId)->first();
+
+            if($isExist){
+                if($request->grade){
+                    $isExist->update([
+                        'grade' => $request->grade
+                    ]);
+                }else{
+                    $isExist = EnteredGrade::where('grade_id', $request->subjectId)
+                    ->where('lrn', $request->studentId)->first();
+    
+                    if($isExist){
+                        $isExist->delete();
+                    }else{
+                        return back()->with('error', "Something went wrong");
+                    }
+                }
+            }else{
+                EnteredGrade::create([
+                    "grade_id" => $request->subjectId,
+                    "lrn" => $request->studentId,
+                    "grade" => $request->grade
+                ]);
+            }
+
+            
+            return back()->with('success', "Success");
+         
         }catch(Exception $err){
             return back()->with('error', "Something went wrong");
         }

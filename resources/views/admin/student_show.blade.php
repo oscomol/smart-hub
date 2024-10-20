@@ -9,16 +9,18 @@
         </ol>
     </nav>
 @endsection
-
+@section('title')
+    Student Information
+@endsection
 @section('adminContent')
 
-<div class="container mt-4">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <!-- Print Header Partial -->
             @include('partials.print_header')
 
-            <h2 class="mb-0">Records for {{ $student->name }}</h2>
+            <h2 class="mb-0">{{ $student->name }}</h2>
         </div>
         <div class="card-body">
             <!-- Personal Info Section -->
@@ -55,7 +57,7 @@
                     <p><strong>Barangay:</strong> {{ $student->barangay }}</p>
                 </div>
                 <div class="col-md-4">
-                    <p><strong>Municipality:</strong> {{ $student->municipality }}</p>
+                    <p><strong>Municipality/City:</strong> {{ $student->municipality }}</p>
                 </div>
             </div>
 

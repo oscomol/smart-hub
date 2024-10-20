@@ -23,15 +23,20 @@
           <p class="animation__wobble">Smart School Data Hub</p>
         </div>
       
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-light">
-          <!-- Left navbar links -->
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link text-dark" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-          </ul>
-        </nav>
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link text-dark" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item float-right ms-4">
+            <a class="nav-link text-dark" href="{{ route('chat.show') }}"><i class="far fa-comments"></i> Chat</a>
+          </li>
+        </ul>
+      </nav>
         
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="#" class="brand-link">
@@ -121,12 +126,13 @@
                   </li>
 
                   <li class="nav-item">
-                    <a href="{{url('/faculty/logout')}}"  class="nav-link">
-                      <i class="nav-icon fa fa-lock"></i>
-                      <p>
-                        Logout
-                      </p>
+                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                   </li>
                   
                   {{-- <li class="nav-item">

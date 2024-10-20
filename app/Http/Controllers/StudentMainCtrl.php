@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicRecord;
 use App\Models\ClassSchedule;
+use App\Models\ClassSubject;
 use App\Models\DisciplinaryRecord;
 use App\Models\Enrol;
+use App\Models\EnteredGrade;
 use App\Models\EventAtt;
 use App\Models\FacAnnouncement;
 use App\Models\FacEvent;
@@ -34,10 +36,21 @@ class StudentMainCtrl extends Controller
         $isEnrol = false;
         $days = [];
 
+        $subjects = null;
         
         if ($enrol) {
             $isEnrol = true;
             $grade = Grade::where('id', $enrol->grade_id)->first();
+
+            $subject = ClassSubject::where('grade_id', $grade->id)->get();
+
+            $subjects = $subject->map(function($sub)use($lrn){
+                $grades = EnteredGrade::where('lrn', $lrn)->where('grade_id', $sub->id)->first();
+                if($grades){
+                    $sub->grade = $grades->grade;
+                }
+                return $sub;
+            });
 
             $gradeSection .= "Grade $grade->grade - $grade->section";
     
@@ -61,6 +74,13 @@ class StudentMainCtrl extends Controller
                 $sched = ClassSchedule::where('day', $day['day'])
                     ->where('grade_id', $curId)
                     ->first();
+
+                $subjects = ClassSubject::where('grade_id', $curId)->where('day', $day['day'])->get();
+
+                if($subjects->count() > 0){
+                    $day['subjects'] = $subjects;
+                }
+                
                 if ($sched) {
                     $day['startAt'] = $sched->startAt;
                     $day['endAt'] = $sched->endAt;
@@ -76,7 +96,7 @@ class StudentMainCtrl extends Controller
     
         $title = "$userData->name $gradeSection";
 
-        return view('student.schedule', compact('days', 'isEnrol', 'title', 'gradeSection', 'user'));
+        return view('student.schedule', compact('days', 'isEnrol', 'title', 'gradeSection', 'user', 'subjects'));
     }
     
     

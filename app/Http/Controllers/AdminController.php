@@ -9,6 +9,10 @@ use App\Models\AcademicRecord;
 use App\Models\MedicalRecord;
 use App\Models\DisciplinaryRecord;
 use App\Models\Faculty; 
+use App\Models\Facility; 
+use App\Models\UserLog;
+use App\Models\FacEvent;   
+use App\Models\FacAnnouncement;
 use App\Traits\LogUserActivityTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,9 +21,75 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
     use LogUserActivityTrait;
-    public function index() { #function to view dasboard
-        return view('admin.dashboard'); 
+
+    public function index()
+    {
+        // Count the total number of users
+        $totalUsers = User::count();
+    
+        // Count the number of students
+        $studentsCount = User::where('userType', 'student')->count();
+    
+        // Count the number of faculty members
+        $facultyCount = User::where('userType', 'faculty')->count();
+    
+        // Count the number of facilities
+        $facilitiesCount = Facility::count();
+    
+        // Fetch user logs (latest activity) and group them by user
+        $userLogs = UserLog::with('user')->orderBy('created_at')->get();
+        $activitiesByUser = $userLogs->groupBy('user.username');
+    
+        // Prepare data for the chart
+        $labels = [];
+        $datasets = [];
+        $colors = []; // Array to hold colors for each user
+    
+        foreach ($activitiesByUser as $userName => $activities) {
+            $dataPoints = [];
+            foreach ($activities as $activity) {
+                // Use the date as a label
+                $date = \Carbon\Carbon::parse($activity->created_at)->format('Y-m-d H:i'); 
+                if (!in_array($date, $labels)) {
+                    $labels[] = $date; 
+                }
+                $dataPoints[] = $activity->activity; 
+            }
+    
+            // Generate a unique color for each user
+            $color = '#' . substr(md5($userName), 0, 6); 
+            $colors[$userName] = $color;
+    
+            $datasets[] = [
+                'label' => $userName,
+                'data' => array_count_values($dataPoints), 
+                'fill' => false,
+                'borderColor' => $color, 
+                'tension' => 0.1,
+            ];
+        }
+    
+        // Fetch incoming schedules (events) and outgoing announcements
+        $incomingSchedules = FacEvent::where('startAt', '>=', now())->get(); 
+        $outgoingAnnouncements = FacAnnouncement::latest()->get(); 
+    
+        // Pass all data to the view
+        return view('admin.dashboard', compact(
+            'totalUsers',
+            'studentsCount',
+            'facultyCount',
+            'facilitiesCount',
+            'incomingSchedules',
+            'outgoingAnnouncements',
+            'labels',
+            'datasets',
+            'activitiesByUser', 
+            'colors' 
+        ));
     }
+    
+    
+    
 
     #== STUDENT MANAGEMENT START HERE
     public function student() {
@@ -76,10 +146,31 @@ class AdminController extends Controller
             'remarks' => $request->remarks,
         ]);
 
+        // Automatically create a user account for the student
+         $this->registerStudentUser($student);
+
         // Log user activity
         $this->logActivity('Added a new student: ' . $student->name);
 
         return redirect()->back()->with('insert_success', 'Student information saved successfully.');
+    }
+
+    # Method to handle the registration of new users for students
+    private function registerStudentUser(Student $student)
+    {
+        # Create a new user for the student
+        $userData = [
+            'username' => $student->name, // Use student's name as username
+            'lrn' => $student->lrn,
+            'password' => Hash::make('studentpassword'), // default password
+            'userType' => 'student',
+        ];
+
+        # Save the new user
+        $user = User::create($userData);
+
+        # Log the activity
+        $this->logActivity('Registered a new user for student: ' . $user->username);
     }
 
     #Funtion to Update the tables
@@ -372,21 +463,18 @@ class AdminController extends Controller
         return view('admin.staff');
     }
 
-    // public function logs() {
-    //     return view('admin.logs');
-    // }
-
-    public function account() {
-        $users = User::all(); #Fetch all users
-        return view('admin.account', compact('users'));
-    }
-
+    
     public function reports() {
         return view('admin.reports');
     }
 
     public function settings() {
         return view('admin.settings');
+    }
+
+    public function account() {
+        $users = User::all(); #Fetch all users
+        return view('admin.account', compact('users'));
     }
 
 
@@ -467,5 +555,5 @@ class AdminController extends Controller
 
         return redirect()->back()->with('delete_warning', 'User deleted successfully.');
     }
-    
+
 }
