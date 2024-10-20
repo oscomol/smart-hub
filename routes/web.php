@@ -179,6 +179,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
         Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
 
+        //SUBJECT
+        Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
+        Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
+        Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
+
 
     });
 });
