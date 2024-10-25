@@ -42,6 +42,7 @@
                         <span class="badge badge-danger notifC"></span>
                     </a>
                 </li>
+                
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-tool dropdown-toggle text-bold" data-toggle="dropdown">
@@ -49,18 +50,23 @@
                     </button>
                     
                     <div class="dropdown-menu dropdown-menu-right" role="menu">
-                    <a href="{{url('/student/info')}}" class="dropdown-item">
-                        <li class="fa fa-user mr-2"></li>
-                        Student Info
-                    </a>
-                    <form action="{{url('/logout')}}" method="POST">
-                        @csrf
-                        @method('post')
-                        <button type="submit" href="#" class="dropdown-item">
-                            <li class="fa fa-lock mr-2"></li>
-                            Logout
-                        </button>
-                    </form>
+                        <a href="{{url('/student/info')}}" class="dropdown-item">
+                            <li class="fa fa-user mr-2"></li>
+                            Student Info
+                        </a>
+                        <a href="{{ route('settings.account') }}" class="dropdown-item">
+                            <i class="nav-icon fas fa-user-cog"></i>
+                            Account Settings
+                        </a>
+                    
+                        <form action="{{url('/logout')}}" method="POST">
+                            @csrf
+                            @method('post')
+                            <button type="submit" href="#" class="dropdown-item">
+                                <li class="fa fa-lock mr-2"></li>
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
 

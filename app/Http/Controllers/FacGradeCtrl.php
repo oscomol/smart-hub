@@ -15,6 +15,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Traits\LogUserActivityTrait;
+use Illuminate\Support\Facades\Log;
+
 
 class FacGradeCtrl extends Controller
 {
@@ -231,32 +233,41 @@ class FacGradeCtrl extends Controller
         return view("faculty.students", compact('students', 'grades'));
     }
 
-    public function updateEnroll(Request $request){
-        try{
-            
-            
+    public function updateEnroll(Request $request)
+    {
+        try {
+           
             $isEnrolled = Enrol::where('student_id', $request->studentId)->first();
-
-            if($isEnrolled){
-                if($request->id == "0"){
+    
+            if ($isEnrolled) {
+             
+                if ($request->id == "0") {
                     $isEnrolled->delete();
-                }else{
+                } else {
+                 
                     $isEnrolled->update([
                         "grade_id" => $request->id
                     ]);
                 }
-            }else{
+            } else {
+             
                 Enrol::create([
-                    "grade_id" => $request->id, "student_id" => $request->studentId
+                    "grade_id" => $request->id,
+                    "student_id" => $request->studentId
                 ]);
             }
-
+    
             return back()->with('success', "Success");
-
-        }catch(Exception $err){
-            return back()->with('error', "Something went wrong");
+    
+        } catch (Exception $err) {
+            // Log the error message for debugging
+            Log::error('Error in updateEnroll: ' . $err->getMessage());
+            
+      
+            return back()->with('error', $err->getMessage());
         }
     }
+    
 
     public function addSubject(Request $request){
         try{

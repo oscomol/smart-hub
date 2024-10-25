@@ -1,19 +1,11 @@
-@extends('layout.admin')
+@extends(auth()->user()->userType === 'administrator' ? 'layout.admin' : (auth()->user()->userType === 'faculty' ? 'layout.xtian.facultyLayout' : 'layout.xtian.studentLayout'))
 
-@section('breadcrumbs')
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Account</li>
-    </ol>
-</nav>
-@endsection
+@section(auth()->user()->userType === 'administrator' ? 'adminContent' : 'content')
 
 @section('title')
     My Account
 @endsection
 
-@section('adminContent')
 <div class="container-fluid">
     @include('partials.message')
     <div class="row">
@@ -55,7 +47,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <h5 class="modal-title" id="editUserModalLabel">Edit Account</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -68,20 +60,30 @@
                     <!-- Username Field -->
                     <div class="form-group">
                         <label for="edit_username">Username:</label>
-                        <input type="text" name="username" class="form-control" id="edit_username" required>
+                        <input type="text" name="username" class="form-control" id="edit_username" value="{{ old('username', auth()->user()->username) }}" required>
+                        @error('username')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Password Field -->
                     <div class="form-group">
                         <label for="edit_password">Password (Leave blank to keep current password):</label>
                         <input type="password" name="password" class="form-control" id="edit_password">
+                        @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    
+
                     <!-- Password Confirmation Field -->
                     <div class="form-group">
                         <label for="edit_password_confirmation">Confirm Password:</label>
                         <input type="password" name="password_confirmation" class="form-control" id="edit_password_confirmation">
+                        @error('password_confirmation')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
+
 
                     <!-- Submit Button -->
                     <div class="modal-footer">
@@ -96,15 +98,18 @@
 </div>
 
 @section('script')
-<!-- DataTables Initialization -->
 <script type="module">
     $(document).ready(function() {
         $('#users-table').DataTable();
+
+        @if ($errors->any())
+         $('#editUserModal').modal('show');
+        @endif
     });
 
     $(document).on('click', '.edit-user', function() {
         var userId = $(this).data('id');
-        $('#editUserForm').attr('action', '/admin/accounts/update/' + userId);
+        $('#editUserForm').attr('action', '/admin/updateAccount/' + userId);
         $('#edit_username').val('{{ auth()->user()->username }}'); 
         $('#editUserModal').modal('show');
     });

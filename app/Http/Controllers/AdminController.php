@@ -477,6 +477,18 @@ class AdminController extends Controller
         return view('admin.account', compact('users'));
     }
 
+    public function curUser()
+    {
+        $user = auth()->user(); 
+
+        // Check if user is authenticated
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        return view('settings.index', compact('user')); 
+    }
+
 
     #Method to handle the registration of new users
     public function register(Request $request)
@@ -544,6 +556,30 @@ class AdminController extends Controller
 
         return redirect()->back()->with('update_info', 'User updated successfully.');
     }
+
+    public function updateAccount(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        // Validate the incoming data
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        // Update user data
+        $user->username = $request->username;
+        
+        // Only update the password if it's provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('update_info', 'User updated successfully.');
+    }
+
     #Method to delete user
     public function destroy($id)
     {

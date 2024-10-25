@@ -124,6 +124,13 @@
                       </p>
                     </a>
                   </li>
+                  <!-- Account Settings -->
+                  <li class="nav-item">
+                      <a href="{{ route('settings.account') }}" class="nav-link {{ request()->is('settings/account') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-user-cog"></i>
+                          <p>Account Settings</p>
+                      </a>
+                  </li>
 
                   <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

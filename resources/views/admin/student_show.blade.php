@@ -222,9 +222,9 @@ function printStudentInfo() {
     document.getElementById('downloadExcel').style.display = 'none';
     
     // Hide the accordion
-    var accordion = document.getElementById('recordsAccordion'); // Replace with your accordion ID or class
+    var accordion = document.getElementById('recordsAccordion'); 
     if (accordion) {
-        accordion.style.display = 'none'; // Hide the accordion
+        accordion.style.display = 'none'; 
     }
 
     // Trigger the print dialog
@@ -237,7 +237,7 @@ function printStudentInfo() {
 
     // Show the accordion again
     if (accordion) {
-        accordion.style.display = 'block'; // Restore the accordion
+        accordion.style.display = 'block'; 
     }
 }
 

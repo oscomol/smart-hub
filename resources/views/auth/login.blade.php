@@ -24,33 +24,37 @@
                     @endif
 
                     @if ($userType === "administrator" || $userType === "faculty")
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Username" name="username">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                        <!-- Username Field for administrator and faculty only -->
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Username" name="username" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @elseif ($userType === "student")
+                        <!-- LRN Field for students only -->
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" placeholder="Enter student LRN" name="lrn" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card"></span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Password Field for all user types -->
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
-                    @else
-                    <div class="input-group mb-3">
-                        <input type="number" class="form-control" placeholder="Enter student LRN" name="lrn">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                    
+
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary btn-block btn btn-sm">Sign In</button>

@@ -34,10 +34,7 @@ use App\Http\Controllers\ChatController;
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-// chat
-Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
-Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
-Route::post('/chat/fetch-messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
+
 
 Route::match(['GET', 'POST'],'/login/{userType}', [LoginCtrl::class,'login'])->name('login');
 
@@ -45,11 +42,19 @@ Route::get('/', function () {
     return view('auth.chooseLogin');
 });
 
+
 Route::get('/login/{userType}', [LoginCtrl::class, 'index'])->name('login-type');
 
 
 Route::group(['middleware' => 'auth'], function() {
 
+    // chat
+    Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/chat/fetch-messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
+
+    Route::get('/settings/account', [AdminController::class, 'curUser'])->name('settings.account');
+    Route::put('/admin/updateAccount/{id}', [AdminController::class, 'updateAccount'])->name('admin.account.update');
     //student routes
     Route::middleware(['checkRole:student'])->group(function() {
 
@@ -107,19 +112,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/students/{id}', [AdminController::class, 'show'])->name('students.show');
 
         #faculty management routes
-        // Route to display the faculty listing
         Route::get('/admin/faculty', [AdminController::class, 'faculty'])->name('admin.faculty');
-        // Route to display the detailed view for a specific faculty
         Route::get('/admin/faculty/{id}', [AdminController::class, 'showFacultyDetails'])->name('admin.faculty.details');
-        // add new faculty record 
         Route::post('/admin/faculty', [AdminController::class, 'storeNewFaculty'])->name('faculty.store');
-        //route to open add record
         Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
-        // Route to show the edit form for a faculty member
         Route::get('/admin/faculty/edit/{id}', [AdminController::class, 'editSingleRecord'])->name('admin.faculty.edit');
-        // Route to update the faculty record
         Route::put('/admin/faculty/update/{id}', [AdminController::class, 'updateSingleFacultyRecord'])->name('admin.faculty.update');
-        // Route to delete the faculty record
         Route::delete('/admin/faculty/{id}', [AdminController::class, 'deleteFacultyRecord'])->name('admin.faculty.delete');
 
         //schools info

@@ -61,67 +61,65 @@
             <a href="#" class="brand-link d-block text-center">
                 <img src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" class="img-fluid img-circle elevation-3" style="max-width: 150px;"> <!-- Adjust width if needed -->
             </a>
-        
+
             <div class="sidebar">
-                <div class="user-panel mt-3 pb-2 mb-3 text-center"> <!-- Center the content -->
+                <div class="user-panel mt-3 pb-2 mb-3 text-center">
+                    <!-- Center the content -->
                     <div class="info">
                         <h4>Smart Data Hub</h4>
                     </div>
                 </div>
-        
+
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        
+
+                        <!-- Dashboard -->
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-tachometer-alt"></i> 
                                 <p>Dashboard</p>
                             </a>
                         </li>
-        
+
+                        <!-- Accounts -->
                         <li class="nav-item">
                             <a href="{{ route('admin.account') }}" class="nav-link {{ request()->is('admin/account') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <i class="nav-icon fas fa-user-circle"></i>
                                 <p>Accounts</p>
                             </a>
                         </li>
-        
+
                         <!-- Records Dropdown -->
                         <li class="nav-item has-treeview {{ request()->is('admin/student') || request()->is('admin/faculty') || request()->is('admin/staff') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ request()->is('admin/student') || request()->is('admin/faculty') || request()->is('admin/staff') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-file-alt"></i>
+                                <i class="nav-icon fas fa-folder"></i> 
                                 <p>
                                     Records
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <!-- Student Records -->
                                 <li class="nav-item">
                                     <a href="{{ route('admin.student') }}" class="nav-link {{ request()->is('admin/student') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-user-graduate"></i>
+                                        <i class="fas fa-user-graduate nav-icon"></i> 
                                         <p>Student Records</p>
                                     </a>
                                 </li>
+
+                                <!-- Faculty Records -->
                                 <li class="nav-item">
                                     <a href="{{ route('admin.faculty') }}" class="nav-link {{ request()->is('admin/faculty') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                        <i class="fas fa-chalkboard-teacher nav-icon"></i> 
                                         <p>Faculty Records</p>
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
-                                    <a href="{{ route('admin.staff') }}" class="nav-link {{ request()->is('admin/staff') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-users"></i> 
-                                        <p>Staff Records</p>
-                                    </a>
-                                </li> --}}
                             </ul>
                         </li>
-                        <!-- End of Records Dropdown -->
-
-                        <li class="nav-item {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
+                        <li class="nav-item {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') || request()->is('procedures*') || request()->is('policies*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->is('schools*') || request()->is('governance*') || request()->is('facilities*') || request()->is('procedures*') || request()->is('policies*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-building"></i> 
                                 <p>
                                     Administrative Details
                                     <i class="right fas fa-angle-left"></i>
@@ -130,7 +128,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('schools.index') }}" class="nav-link {{ request()->is('schools*') ? 'active' : '' }}">
-                                        <i class="fas fa-school nav-icon"></i>
+                                        <i class="fas fa-school nav-icon"></i> 
                                         <p>School Information</p>
                                     </a>
                                 </li>
@@ -142,69 +140,57 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('facilities.index') }}" class="nav-link {{ request()->is('facilities*') ? 'active' : '' }}">
-                                        <i class="fas fa-building nav-icon"></i>
+                                        <i class="fas fa-building nav-icon"></i> 
                                         <p>School Facilities</p>
                                     </a>
                                 </li>
-                            </ul>
-                        </li>
-                        
-                        
-        
-                        <li class="nav-item">
-                            <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->is('admin/logs') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-history"></i>
-                                <p>Logs</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('admin.reports') }}" class="nav-link {{ request()->is('admin/reports') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>Reports</p>
-                            </a>
-                        </li>
-        
-                        <li class="nav-item {{ request()->is('procedures*') || request()->is('policies*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('procedures*') || request()->is('policies*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Settings
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('procedures.index') }}" class="nav-link {{ request()->is('procedures*') ? 'active' : '' }}">
-                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <i class="fas fa-clipboard-list nav-icon"></i> 
                                         <p>Administrative Procedures</p>
                                     </a>
-                                </li>
+                                </li>                                
                                 <li class="nav-item">
                                     <a href="{{ route('policies.index') }}" class="nav-link {{ request()->is('policies*') ? 'active' : '' }}">
-                                        <i class="fas fa-file-alt nav-icon"></i>
+                                        <i class="fas fa-file-alt nav-icon"></i> 
                                         <p>Policies</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                                            
 
+                        <!-- Logs -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->is('admin/logs') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-history"></i> 
+                                <p>Logs</p>
+                            </a>
+                        </li>
+
+                        <!-- Account Settings -->
+                        <li class="nav-item">
+                            <a href="{{ route('settings.account') }}" class="nav-link {{ request()->is('settings/account') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-cog"></i>
+                                <p>Account Settings</p>
+                            </a>
+                        </li>
+                        
+
+                        <!-- Logout -->
                         <li class="nav-item">
                             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <i class="nav-icon fas fa-sign-out-alt"></i> 
                                 <p>Logout</p>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </li>
-                       
-        
                     </ul>
                 </nav>
             </div>
         </aside>
+
 
      
         <!-- Content Wrapper -->

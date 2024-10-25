@@ -42,7 +42,7 @@ class LoginCtrl extends Controller
                 $credentials = [
                     'lrn' => $request->lrn,
                     'userType' => $userType,
-                    'password' => 'studentpassword',
+                    'password' => $request->password,
                 ];
 
                 if (Auth::attempt($credentials)) {

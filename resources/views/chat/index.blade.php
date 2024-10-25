@@ -26,21 +26,25 @@
                 <div class="direct-chat-messages" id="messages">
                     @if($messages->isNotEmpty())
                         @foreach($messages as $message)
-                            <div class="direct-chat-msg {{ $message->sender_id == Auth::id() ? 'right' : '' }}">
-                                <div class="direct-chat-infos clearfix">
-                                    @if ($message->sender_id == Auth::id())
-                                        <span class="direct-chat-name float-right">{{ optional($users->find($message->sender_id))->username }}</span>
-                                        <span class="direct-chat-timestamp float-right">{{ $message->created_at->format('H:i') }}</span>
-                                    @else
-                                        <span class="direct-chat-name float-left">{{ optional($users->find($message->sender_id))->username }}</span><br>
-                                        <span class="direct-chat-timestamp float-left">{{ $message->created_at->format('H:i') }}</span>
-                                    @endif
-                                </div>
-                                <img class="direct-chat-img" src="https://via.placeholder.com/50" alt="User Image">
-                                <div class="direct-chat-text {{ $message->sender_id == Auth::id() ? 'bg-primary text-white' : 'bg-light text-dark' }}" style="max-width: 60%; border-radius: 20px; {{ $message->sender_id == Auth::id() ? 'margin-left:auto;' : '' }}">
-                                    {{ $message->message }}
-                                </div>
+                        <div class="direct-chat-msg {{ $message->sender_id == Auth::id() ? 'right' : '' }}">
+                            <div class="direct-chat-infos clearfix">
+                                @if ($message->sender_id == Auth::id())
+                                    <span class="direct-chat-name float-right">{{ optional($users->find($message->sender_id))->username }}</span>
+                                    <span class="direct-chat-timestamp float-right">{{ $message->created_at->format('H:i') }}</span>
+                                @else
+                                    <span class="direct-chat-name float-left">{{ optional($users->find($message->sender_id))->username }}</span><br>
+                                    <span class="direct-chat-timestamp float-left">{{ $message->created_at->format('H:i') }}</span>
+                                @endif
                             </div>
+                        
+                            <span class="direct-chat-icon {{ $message->sender_id == Auth::id() ? 'float-right' : 'float-left' }}">
+                                <i class="fas fa-user" style="font-size: 50px;"></i>
+                            </span>
+                            <div class="direct-chat-text {{ $message->sender_id == Auth::id() ? 'bg-primary text-white' : 'bg-light text-dark' }}" 
+                                 style="max-width: 60%; border-radius: 20px; {{ $message->sender_id == Auth::id() ? 'margin-left:auto;' : '' }}">
+                                {{ $message->message }}
+                            </div>
+                        </div>  
                         @endforeach
                     @else
                         <p class="text-muted">No messages yet with this user.</p>
@@ -91,21 +95,25 @@
                 <div class="direct-chat-messages" id="messages">
                     @if($messages->isNotEmpty())
                         @foreach($messages as $message)
-                            <div class="direct-chat-msg {{ $message->sender_id == Auth::id() ? 'right' : '' }}">
-                                <div class="direct-chat-infos clearfix">
-                                    @if ($message->sender_id == Auth::id())
-                                        <span class="direct-chat-name float-right">{{ optional($users->find($message->sender_id))->username }}</span>
-                                        <span class="direct-chat-timestamp float-right">{{ $message->created_at->format('H:i') }}</span>
-                                    @else
-                                        <span class="direct-chat-name float-left">{{ optional($users->find($message->sender_id))->username }}</span><br>
-                                        <span class="direct-chat-timestamp float-left">{{ $message->created_at->format('H:i') }}</span>
-                                    @endif
-                                </div>
-                                <img class="direct-chat-img" src="https://via.placeholder.com/50" alt="User Image">
-                                <div class="direct-chat-text {{ $message->sender_id == Auth::id() ? 'bg-primary text-white' : 'bg-light text-dark' }}" style="max-width: 60%; border-radius: 20px; {{ $message->sender_id == Auth::id() ? 'margin-left:auto;' : '' }}">
-                                    {{ $message->message }}
-                                </div>
+                        <div class="direct-chat-msg {{ $message->sender_id == Auth::id() ? 'right' : '' }}">
+                            <div class="direct-chat-infos clearfix">
+                                @if ($message->sender_id == Auth::id())
+                                    <span class="direct-chat-name float-right">{{ optional($users->find($message->sender_id))->username }}</span>
+                                    <span class="direct-chat-timestamp float-right">{{ $message->created_at->format('H:i') }}</span>
+                                @else
+                                    <span class="direct-chat-name float-left">{{ optional($users->find($message->sender_id))->username }}</span><br>
+                                    <span class="direct-chat-timestamp float-left">{{ $message->created_at->format('H:i') }}</span>
+                                @endif
                             </div>
+                        
+                            <span class="direct-chat-icon {{ $message->sender_id == Auth::id() ? 'float-right' : 'float-left' }}">
+                                <i class="fas fa-user" style="font-size: 50px;"></i>
+                            </span>
+                            <div class="direct-chat-text {{ $message->sender_id == Auth::id() ? 'bg-primary text-white' : 'bg-light text-dark' }}" 
+                                 style="max-width: 60%; border-radius: 20px; {{ $message->sender_id == Auth::id() ? 'margin-left:auto;' : '' }}">
+                                {{ $message->message }}
+                            </div>
+                        </div>                        
                         @endforeach
                     @else
                         <p class="text-muted">No messages yet with this user.</p>
@@ -169,7 +177,7 @@
 @endsection
 
 @section('scripts')
-<script>
+<script type="module">
     const userId = '{{ $selectedUserId }}';
 
     if (userId) {
@@ -205,8 +213,12 @@
                             ${new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                     </div>
-                    <img class="direct-chat-img" src="https://via.placeholder.com/50" alt="User Image">
-                    <div class="direct-chat-text ${message.sender_id == '{{ Auth::id() }}' ? 'bg-primary text-white' : 'bg-light text-dark'}" style="max-width: 60%; border-radius: 20px; ${message.sender_id == '{{ Auth::id() }}' ? 'margin-left:auto;' : ''}">
+                    <!-- Replacing img tag with an icon -->
+                    <span class="direct-chat-icon ${message.sender_id == '{{ Auth::id() }}' ? 'float-right' : 'float-left'}">
+                        <i class="fas fa-user" style="font-size: 50px;"></i>
+                    </span>
+                    <div class="direct-chat-text ${message.sender_id == '{{ Auth::id() }}' ? 'bg-primary text-white' : 'bg-light text-dark'}" 
+                        style="max-width: 60%; border-radius: 20px; ${message.sender_id == '{{ Auth::id() }}' ? 'margin-left:auto;' : ''}">
                         ${message.message}
                     </div>
                 `;
