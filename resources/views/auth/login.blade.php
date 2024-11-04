@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="login-box">
-
         <form action="{{ url('/login', ['userType' => $userType]) }}" method="POST">
             @csrf
             @method('post')
@@ -33,8 +32,8 @@
                                 </div>
                             </div>
                         </div>
-                    @elseif ($userType === "student")
-                        <!-- LRN Field for students only -->
+                    @elseif ($userType === "student" || $userType === "parents")
+                        <!-- LRN Field for students and parents -->
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" placeholder="Enter student LRN" name="lrn" required>
                             <div class="input-group-append">

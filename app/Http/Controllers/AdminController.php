@@ -147,12 +147,15 @@ class AdminController extends Controller
         ]);
 
         // Automatically create a user account for the student
-         $this->registerStudentUser($student);
+        $this->registerStudentUser($student);
+
+         // Automatically create a parent user account
+        $this->registerParentUser($guardian, $student);
 
         // Log user activity
         $this->logActivity('Added a new student: ' . $student->name);
 
-        return redirect()->back()->with('insert_success', 'Student information saved successfully.');
+        return redirect()->back()->with('insert_success', 'Student and Parents information saved successfully.');
     }
 
     # Method to handle the registration of new users for students
@@ -171,6 +174,23 @@ class AdminController extends Controller
 
         # Log the activity
         $this->logActivity('Registered a new user for student: ' . $user->username);
+    }
+
+    // Method to create a parent user account
+    private function registerParentUser(Guardian $guardian, Student $student)
+    {
+        $userData = [
+            'username' => $guardian->father_name, // or mother_name if preferred
+            'lrn' => $student->lrn,               // Link with student’s LRN
+            'password' => Hash::make('parentpassword'), // Default password
+            'userType' => 'parents',
+        ];
+
+        // Save the parent user
+        $user = User::create($userData);
+
+        // Log activity
+        $this->logActivity('Registered a new user for parent: ' . $user->username);
     }
 
     #Funtion to Update the tables

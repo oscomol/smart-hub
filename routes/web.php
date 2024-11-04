@@ -17,6 +17,7 @@ use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\GovernanceController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ParentController;
 
 
 
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/settings/account', [AdminController::class, 'curUser'])->name('settings.account');
     Route::put('/admin/updateAccount/{id}', [AdminController::class, 'updateAccount'])->name('admin.account.update');
+    
     //student routes
     Route::middleware(['checkRole:student'])->group(function() {
 
@@ -71,12 +73,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/student/info', [StudentMainCtrl::class, 'show']);
     });
 
-     //parents routes
+    // Parent routes
     Route::middleware(['checkRole:parents'])->group(function() {
-        Route::get('/parents', function(){
-            dd('parents');
-        });
+        Route::get('/parent', [ParentController::class, 'scheduleIndex'])->name('parents.schedule');
+        Route::get('/parent/announcement', [ParentController::class, 'announcementIndex'])->name('parents.announcement');
+        Route::get('/parent/info', [ParentController::class, 'show'])->name('parents.info');
     });
+
 
    // Admin access routes
     Route::middleware(['checkRole:administrator'])->group(function() {

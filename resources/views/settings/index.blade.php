@@ -1,5 +1,13 @@
-@extends(auth()->user()->userType === 'administrator' ? 'layout.admin' : (auth()->user()->userType === 'faculty' ? 'layout.xtian.facultyLayout' : 'layout.xtian.studentLayout'))
-
+@extends(
+    auth()->user()->userType === 'administrator' 
+        ? 'layout.admin' 
+        : (auth()->user()->userType === 'faculty' 
+            ? 'layout.xtian.facultyLayout' 
+            : (auth()->user()->userType === 'parents' 
+                ? 'layout.parent' 
+                : 'layout.xtian.studentLayout')
+        )
+)
 @section(auth()->user()->userType === 'administrator' ? 'adminContent' : 'content')
 
 @section('title')

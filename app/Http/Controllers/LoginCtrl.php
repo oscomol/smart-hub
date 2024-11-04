@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class LoginCtrl extends Controller
 {
@@ -32,9 +34,9 @@ class LoginCtrl extends Controller
                     if ($userType === "faculty") {
                         return redirect('/faculty');
                     }
-                    if ($userType === "staff") {
-                        return redirect('/staff'); 
-                    }
+                    // if ($userType === "staff") {
+                    //     return redirect('/staff'); 
+                    // }
                 }
                     return back()->with('error', true);
                 
@@ -49,9 +51,13 @@ class LoginCtrl extends Controller
                     if ($userType === "student") {
                         return redirect('/student');
                     }
-                    return redirect('/parents');
+                    if ($userType === "parents") {
+                        // Retrieve the student's details
+                        $student = Student::where('lrn', $request->lrn)->first();
+                        return redirect('/parent');
+                    }
                 } else {
-                    return back()->with('error', true);
+                    return back()->with('error', 'Invalid login credentials');
                 }
             }
         }

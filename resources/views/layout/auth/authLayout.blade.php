@@ -7,14 +7,18 @@
     <title>@yield('title')</title>
 
     @vite(['resources/css/app.css'])
-
 </head>
 
 <body class="hold-transition login-page">
-    @yield('content')
-     @vite(['resources/js/app.js'])
+    <div class="login-logo text-center mb-2">
+        <img src="{{ asset('img/school-logo.jpg') }}" alt="School Logo" width="200" height="80" class="img-fluid mb-2">
+    </div>
 
-     @yield('script')
+    @yield('content')
+
+    @vite(['resources/js/app.js'])
+
+    @yield('script')
 </body>
 
 </html>
