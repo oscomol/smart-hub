@@ -115,7 +115,16 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="mother_tongue">Mother Tongue:</label>
-                            <input type="text" name="mother_tongue" class="form-control" id="mother_tongue" required>
+                            {{-- <input type="text" name="mother_tongue" class="form-control" id="mother_tongue" required> --}}
+
+                            <select class="form-control" name="mother_tongue" class="form-control" id="mother_tongue" required>
+                                <option value="Hiligaynon">Hiligaynon</option>
+                                <option value="Ilongo">Ilongo</option>
+                                <option value="Cebuano">Cebuano</option>
+                                <option value="Tagalog">Tagalog</option>
+                              </select>
+
+                              
                         </div>
                         <div class="form-group col-md-4">
                             <label for="ip_ethnic_group">IP (Ethnic Group):</label>
@@ -125,11 +134,29 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="religion">Religion:</label>
-                            <input type="text" name="religion" class="form-control" id="religion" required>
+                            {{-- <input type="text" name="religion" class="form-control" id="religion" required> --}}
+                            <select class="form-control" name="religion" class="form-control" id="religion" required>
+                                <option value="Born again">Born again</option>
+                                <option value="Baptist">Baptist</option>
+                                <option value="INC">INC</option>
+                                <option value="Seventh Day Adventist">Seventh Day Adventist</option>
+                                <option value="Pentecostal">Pentecostal</option>
+                                <option value="Latter Day Saints">Latter Day Saints</option>
+                                <option value="Open Door">Open Door</option>
+                                <option value="Jesus is Lord">Jesus is Lord</option>
+                              </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="barangay">Barangay:</label>
-                            <input type="text" name="barangay" class="form-control" id="barangay" required>
+                            <select class="form-control "name="barangay" class="form-control" id="barangay" required>
+                                <option value="Barangay Old Sagay">Barangay Old Sagay</option>
+                                <option value="Barangay Maquiling">Barangay Maquiling</option>
+                                <option value="Barangay Rizal">Barangay Rizal</option>
+                                <option value="Barangay Taba-ao">Barangay Taba-ao</option>
+                                <option value="Barangay Bulanon">Barangay Bulanon</option>
+                              </select>
+                              
+                            {{-- <input type="text" name="barangay" class="form-control" id="barangay" required> --}}
                         </div>
                         <div class="form-group col-md-4">
                             <label for="municipality">Municipality:</label>
@@ -150,7 +177,13 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="relationship">Relationship:</label>
-                            <input type="text" name="relationship" class="form-control" id="relationship" required>
+                            {{-- <input type="text" name="relationship" class="form-control" id="relationship" required> --}}
+                            <select class="form-control" name="relationship" class="form-control" id="relationship" required>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Widow">Widow</option>
+                              </select>
+                              
                         </div>
                     </div>
                     
@@ -161,7 +194,13 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="learning_modality">Learning Modality:</label>
-                            <input type="text" name="learning_modality" class="form-control" id="learning_modality" required>
+                            {{-- <input type="text" name="learning_modality" class="form-control" id="learning_modality" required> --}}
+                            <select class="form-control" name="learning_modality" class="form-control" id="learning_modality" required>
+                                <option value="Modular">Modular</option>
+                                <option value="Face to face">Face to face</option>
+                              </select>
+
+                              
                         </div>
                         <div class="form-group col-md-4">
                             <label for="remarks">Remarks:</label>

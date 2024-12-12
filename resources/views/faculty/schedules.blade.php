@@ -1,10 +1,10 @@
-@extends('layout.xtian.facultyLayout')
+@extends('layout.admin')
 
 @section('title')
     Class schedule management
 @endsection
 
-@section('content')
+@section('adminContent')
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
 
-                <table class="table table-bordered table-striped mb-3">
+                {{-- <table class="table table-bordered table-striped mb-3">
                     <thead>
                         <tr>
                             <th>Teacher</th>
@@ -50,7 +50,7 @@
                             </th>
                         </tr>
                     </thead>
-                </table>
+                </table> --}}
 
                 <div class="row">
                     <div class="col-12 col-sm-4">
@@ -277,11 +277,33 @@
                                                             <input type="hidden" name="day"
                                                                 value="{{ $item['day'] }}">
 
-                                                            <div class="mb-3">
+                                                            {{-- <div class="mb-3">
                                                                 <label for="subject" class="form-label">Subject</label>
                                                                 <input type="text" class="form-control" id="subject"
                                                                     name="subject">
+                                                            </div> --}}
+
+                                                            <div class="mb-3">
+                                                                <label for="ins_id" class="form-label">Instructor and subject</label>
+                                                                {{-- <input type="text" class="form-control" id="ins_id"
+                                                                    name="ins_id"> --}}
+
+                                                                    <select class="form-control"  id="ins_id"
+                                                                    name="subject" required>
+
+
+                                                                    @foreach ($faculties as $facItem)
+                                                                         <option value="{{$facItem->id}}">
+                                                                            {{$facItem->name}} - {{$facItem->department}}
+                                                                         </option>
+                                                                         @endforeach
+                                                                         
+        
+                                                                    </select>
+
                                                             </div>
+
+
                                                             <div class="mb-3">
                                                                 <label for="startTime" class="form-label">Start
                                                                     time</label>

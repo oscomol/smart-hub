@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('faculties', function (Blueprint $table) {
-            $table->string('addr')->after('gender'); // Add addr column after gender, adjust as needed
+            $table->string('addr')->nullable()->after('gender');
+            // Add addr column after gender, adjust as needed
         });
     }
 

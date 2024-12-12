@@ -75,14 +75,14 @@
                       </a>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                       <a href="{{url('/faculty/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-graduation-cap"></i>
                         <p>
                           Student Management
                         </p>
                       </a>
-                    </li>
+                    </li> --}}
 
                   <li class="nav-item">
                     <a href="{{url('/faculty/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
@@ -92,14 +92,14 @@
                       </p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{url('/faculty/task/list')}}" class="nav-link {{ request()->is('faculty/task/list') ? 'active' : '' }}">
                       <i class="nav-icon far fa-calendar"></i>
                       <p>
                         Events
                       </p>
                     </a>
-                  </li>
+                  </li> --}}
                   <li class="nav-item">
                     <a href="{{url('/faculty/announcement/list')}}" class="nav-link {{ request()->is('faculty/announcement/list') ? 'active' : '' }}">
                       <i class="nav-icon fa fa-bullhorn"></i>

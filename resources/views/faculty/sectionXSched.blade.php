@@ -1,10 +1,10 @@
-@extends('layout.xtian.facultyLayout')
+@extends('layout.admin')
 
 @section('title')
     Class schedule management
 @endsection
 
-@section('content')
+@section('adminContent')
     <div class="container-fluid">
         <div class="col-12">
             <div class="card">

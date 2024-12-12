@@ -21,6 +21,42 @@ use Illuminate\Support\Facades\Log;
 class FacGradeCtrl extends Controller
 {
     use LogUserActivityTrait;
+
+    public function facultyClassView(Request $request){
+       $grade = Grade::where('id', $request->id)->first();
+
+       $students = Enrol::where('grade_id', $request->id)->get();
+
+       $students = $students->map(function($stud){
+        $student = Student::where('lrn', $stud->student_id)
+        ->first();
+
+        return $student;
+       });
+
+       return view("faculty.facultyStude", compact('grade', 'students'));
+    }
+
+    public function facultyClass(){
+        $user = auth()->user();
+
+       $faculty = Faculty::where('faculty_id', $user->lrn)
+       ->select('id', 'name')
+       ->first();
+
+        $subjects = ClassSubject::where("subject", $faculty->id)
+        ->select('grade_id')
+        ->get()->unique();
+
+        $grade = $subjects->map(function($gra){
+
+            $grades = Grade::where('id', $gra->grade_id)->first();
+
+            return $grades;
+        });
+        
+        return view("faculty.classmanage", compact('grade'));
+    }
     public function index(){
         $grades = Grade::all();
 
@@ -133,8 +169,18 @@ class FacGradeCtrl extends Controller
                 ->where('grade_id', $curId)
                 ->first();
             $subjects = ClassSubject::where('grade_id', $curId)
-            ->where('day', $day)->get();
+            ->where('day', $day)->get()->map(function($subJ){
+                $faculty = Faculty::where('id', $subJ->subject)->select('name', 'department')->first();
+
+                $subJ->subject = "$faculty->name - $faculty->department";
+
+                return $subJ;
+            });
+
             if($subjects->count() > 0){
+
+                $faculty = Faculty::where('id', 1)->first();
+
                 $day['subjects'] = $subjects;
             }
             if ($sched) {
@@ -145,7 +191,6 @@ class FacGradeCtrl extends Controller
         
             return $day;
         }, $days);
-
 
 
         return view("faculty.schedules", compact('grades', 'days', 'curId', 'grade', 'faculties', 'instructor', 'students'));
@@ -278,6 +323,7 @@ class FacGradeCtrl extends Controller
                 "endTime" => 'required'
             ]);
 
+           
             $validated["day"] = $request->day;
             $validated["grade_id"] = $request->id;
 

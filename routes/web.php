@@ -83,6 +83,28 @@ Route::group(['middleware' => 'auth'], function() {
 
    // Admin access routes
     Route::middleware(['checkRole:administrator'])->group(function() {
+
+        Route::post('/admin/instructor/update/{id}', [FacGradeCtrl::class, 'updateInstructor'])->name('update.instructor');
+
+        Route::get('/admin/student/list', [FacGradeCtrl::class, 'studentIndex']);
+        Route::post('/admin/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
+
+
+        Route::get('/admin/grade-section/list', [FacGradeCtrl::class, 'index']);
+        Route::post('/admin/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
+        Route::put('/admin/grade/edit/{id}', [FacGradeCtrl::class, 'edit'])->name('edit.grade');
+        Route::delete('/admin/grade/delete', [FacGradeCtrl::class, 'destroy'])->name('delete.grade');
+
+        Route::get('/admin/grade-section/list/{id}', [FacGradeCtrl::class, 'shedule'])->name('show.schedule');
+        Route::post('/admin/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
+        Route::delete('/admin/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
+
+
+        Route::get('/admin/memo', [AdminController::class, 'memoIndex'])->name('admin.memo');
+
+        Route::get('/admin/events', [AdminController::class, 'eventIndex'])->name('admin.events');
+
+
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/student', [AdminController::class, 'student'])->name('admin.student');
         Route::get('/admin/faculty', [AdminController::class, 'faculty'])->name('admin.faculty');
@@ -146,7 +168,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('policies/edit/{id}',[SchoolController::class, 'editPolicies'])->name('policies.editPolicies');
         Route::post('policies/store',[SchoolController::class, 'storePolicies'])->name('policies.storePolicies');
         Route::put('policies/update/{id}',[SchoolController::class, 'updatePolicies'])->name('policies.updatePolicies');
-        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');          
+        Route::delete('policies/{id}',[SchoolController::class, 'destroyPolicies'])->name('policies.destroyPolicies');         
+        
+        
+      
     });
 
 
@@ -194,16 +219,17 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
         Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
 
-        Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'index']);
-        Route::post('/faculty/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
-        Route::put('/faculty/grade/edit/{id}', [FacGradeCtrl::class, 'edit'])->name('edit.grade');
-        Route::delete('/faculty/grade/delete', [FacGradeCtrl::class, 'destroy'])->name('delete.grade');
+        Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'facultyClass']);
+        Route::get('/faculty/grade-section/list/view/{id}', [FacGradeCtrl::class, 'facultyClassView'])->name('faculty.student');
+        // Route::post('/faculty/grade/add', [FacGradeCtrl::class, 'store'])->name('add.grade');
+        // Route::put('/faculty/grade/edit/{id}', [FacGradeCtrl::class, 'edit'])->name('edit.grade');
+        // Route::delete('/faculty/grade/delete', [FacGradeCtrl::class, 'destroy'])->name('delete.grade');
 
-        Route::get('/faculty/grade-section/list/{id}', [FacGradeCtrl::class, 'shedule'])->name('show.schedule');
-        Route::post('/faculty/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
-        Route::delete('/faculty/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
+        // Route::get('/faculty/grade-section/list/{id}', [FacGradeCtrl::class, 'shedule'])->name('show.schedule');
+        // Route::post('/faculty/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
+        // Route::delete('/faculty/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
 
-        Route::post('/faculty/instructor/update/{id}', [FacGradeCtrl::class, 'updateInstructor'])->name('update.instructor');
+        // Route::post('/faculty/instructor/update/{id}', [FacGradeCtrl::class, 'updateInstructor'])->name('update.instructor');
 
         Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
         Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
@@ -215,3 +241,8 @@ Route::group(['middleware' => 'auth'], function() {
  
     });
 });
+
+
+Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
+Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
+Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');

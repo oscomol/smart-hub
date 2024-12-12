@@ -27,6 +27,8 @@ class LoginCtrl extends Controller
                     'password' => $request->password,
                 ];
 
+    
+
                 if (Auth::attempt($credentials)) {
                     if ($userType === "administrator") {
                         return redirect('/admin');

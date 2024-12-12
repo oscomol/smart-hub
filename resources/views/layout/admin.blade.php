@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
     <title>@yield('title')</title>
 
     @vite(['resources/css/app.css'])
@@ -81,6 +81,27 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{url('/admin/grade-section/list')}}" class="nav-link {{ request()->is('faculty/grade-section/list') ? 'active' : '' }}">
+                              <i class="nav-icon fa fa-university"></i>
+                              <p>
+                                Class Management
+                              </p>
+                            </a>
+                          </li>
+      
+                          <li class="nav-item">
+                            <a href="{{url('/admin/student/list')}}" class="nav-link {{ request()->is('faculty/student/list') ? 'active' : '' }}">
+                              <i class="nav-icon fa fa-graduation-cap"></i>
+                              <p>
+                                Student Management
+                              </p>
+                            </a>
+                          </li>
+
+
 
                         <!-- Accounts -->
                         <li class="nav-item">
@@ -160,6 +181,21 @@
                         </li>
 
                         <!-- Logs -->
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.memo') }}" class="nav-link {{ request()->is('admin/memo') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file"></i> 
+                                <p>Memo</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.events') }}" class="nav-link {{ request()->is('admin/events') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-calendar"></i> 
+                                <p>Events</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->is('admin/logs') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-history"></i> 

@@ -13,6 +13,7 @@ use App\Models\Facility;
 use App\Models\UserLog;
 use App\Models\FacEvent;   
 use App\Models\FacAnnouncement;
+use App\Models\Memo;
 use App\Traits\LogUserActivityTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,23 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
     use LogUserActivityTrait;
+
+
+    public function memoIndex(){
+        $memos = Memo::all();
+
+
+        // dd($memos);
+
+        return view('admin.update.memo', compact('memos'));
+    }
+    public function eventIndex(){
+        $events = FacEvent::all();
+
+        // dd($memos);
+
+        return view('admin.update.task', compact('events'));
+    }
 
     public function index()
     {
@@ -376,6 +394,7 @@ class AdminController extends Controller
             'birth' => 'required|date',
             'gender' => 'required|string|max:10',
             'address' => 'required|string|max:255',
+            'addr' => 'required',
             'phone' => 'required|string|max:15',
             'email' => 'required|email|unique:faculties,email|max:255',
             'faculty_id' => 'required|string|unique:faculties,faculty_id|max:20',
@@ -397,13 +416,28 @@ class AdminController extends Controller
             'awards' => 'nullable|string',
         ], [
             'email.unique' => 'The email has already been taken. Please use a different email.',
-            'faculty_id.unique' => 'The Faculty ID has already been taken. Please use a different Faculty ID.',
+            'faculty_id.unique' => 'The Faculty ID has already been taken. Please use a  different Faculty ID.',
         ]);
-    
+
         // Create a new Faculty instance and fill it with the request data
         $faculty = new Faculty();
+
         $faculty->fill($request->all());
+
+        // dd( $faculty);
+
         $faculty->save();
+
+
+        $userData = [
+            'username' => $request->name,
+            'lrn' => $request->faculty_id,             
+            'password' => Hash::make('faculty'), 
+            'userType' => 'faculty',
+        ];
+
+        // Save the parent user
+        $user = User::create($userData);
     
         // Log user activity
         $this->logActivity('Added a new faculty member: ' . $faculty->name);

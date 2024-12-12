@@ -111,20 +111,22 @@
                                     <th>Subject</th>
                                     <th>Grade</th>
                                 </tr>
-                            </thead>
+                            </thead>~
                             <tbody>
-                              @foreach ($subjects as $item)
-                                  <tr>
-                                    <td>{{$item->subject}}</td>
-                                    <td>
-                                        @if (isset($item->grade))
-                                            {{$item->grade}}
-                                        @else
-                                            Not Graded
-                                        @endif
-                                    </td>
-                                  </tr>
-                              @endforeach
+                             @if (isset($subjects))
+                                @foreach ($subjects as $item)
+                                <tr>
+                                <td>{{$item->subject}}</td>
+                                <td>
+                                    @if (isset($item->grade))
+                                        {{$item->grade}}
+                                    @else
+                                        Not Graded
+                                    @endif
+                                </td>
+                                </tr>
+                            @endforeach
+                             @endif
                             </tbody>
                         </table>
                     </div>
