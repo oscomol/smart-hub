@@ -17,7 +17,7 @@
                                 Not Enrolled
                             @endif
                         </h3>
-                        <div class="card-tools">
+                        {{-- <div class="card-tools">
                             @if (isset($days[0]['instructor']))
                                 <span class="badge bg-info">
                                     Instructor: {{ $days[0]['instructor'] }}
@@ -25,71 +25,46 @@
                             @else
                                 No Instructor
                             @endif
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body">
                         <table id="classSchedDataTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Day</th>
-                                    <th>Start time</th>
-                                    <th>End time</th>
                                     <th>Subjects</th>
                                     <th>Instructor</th>
+                                    <th>Time</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($days as $item)
-                                    <tr>
-                                        <td>
-                                            @if (isset($item['day']))
-                                                {{ $item['day'] }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (isset($item['startAt']))
-                                                {{ $item['startAt'] }}
-                                            @else
-                                                NA
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (isset($item['endAt']))
-                                                {{ $item['endAt'] }}
-                                            @else
-                                                NA
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (isset($item['subjects']))
-                                                <div class="btn-group mt-2">
-                                                    <button type="button" class="btn btn-tool dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                        {{$item['subjects'][0]->subject}}
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <tr>
+                                    <td>
+                                        {{ $item['day'] ?? 'NA' }}
+                                    </td>
 
-                                                        @foreach ($item['subjects'] as $subject)
-                                                            <p class="dropdown-item"><span class="text-bold">{{ $subject->subject }}</span><br>
-                                                                {{$subject->startTime}}-{{$subject->endTime}}
-                                                            </p>
-                                                        @endforeach
-
-                                                    </div>
-                                                </div>
-                                            @else
-                                                NA
-                                            @endif
+                                        @if (isset($item["subjects"]))
+                                        <td>
+                                            @foreach ($item["subjects"] as $subject)
+                                                {{$subject->department}} <br>
+                                            @endforeach
                                         </td>
                                         <td>
-                                            @if (isset($item['instructor']))
-                                                {{ $item['instructor'] }}
-                                            @else
-                                                NA
-                                            @endif
+                                            @foreach ($item["subjects"] as $subject)
+                                                {{$subject->name}} <br>
+                                            @endforeach
                                         </td>
-                                    </tr>
-                                @endforeach
+                                        <td>@foreach ($item["subjects"] as $subject)
+                                            {{$subject->time}} <br>
+                                        @endforeach</td>
+                                        @else
+                                        <td>NA</td>
+                                        <td>NA</td>
+                                        <td>NA</td>
+                                        @endif
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

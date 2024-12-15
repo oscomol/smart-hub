@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('grade');
             $table->unsignedInteger('grade_id');
+            $table->unsignedInteger('section');
             $table->string('lrn');
             $table->timestamps();
         });

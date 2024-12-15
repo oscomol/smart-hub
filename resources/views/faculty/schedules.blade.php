@@ -66,7 +66,7 @@
                                         <tr>
                                             <th>Student</th>
                                             <th>LRN</th>
-                                            <th>Grade</th>
+                                            {{-- <th>Grade</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,12 +74,12 @@
                                             <tr>
                                                 <td>{{ $studItem->name }}</td>
                                                 <td>{{ $studItem->lrn }}</td>
-                                                <td>
+                                                {{-- <td>
                                                     <button class="btn btn-sm btn-success" data-toggle="modal"
                                                         data-target="#add-grade-{{ $studItem->id }}">
                                                         View
                                                     </button>
-                                                </td>
+                                                </td> --}}
                                             </tr>
 
 
@@ -123,7 +123,7 @@
 
                                                                     </div>
                                                                     <div class="col-5 mt-3">
-                                                                        <div class="input-group">
+                                                                        {{-- <div class="input-group">
                                                                             <form action="{{route('update.grade', [
                                                                             'subjectId' => $classSub->id,
                                                                             'studentId' => $studItem->lrn
@@ -138,7 +138,7 @@
                                                                                     <li class="fa fa-paper-plane"></li>
                                                                                 </button>
                                                                             </form>
-                                                                        </div>
+                                                                        </div> --}}
                                                                     </div>
                                                                 @endforeach
                                                             </div>

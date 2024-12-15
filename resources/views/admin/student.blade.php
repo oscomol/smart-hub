@@ -93,7 +93,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="lrn">LRN:</label>
-                            <input type="text" name="lrn" class="form-control" id="lrn" required>
+                            <input type="number" name="lrn" class="form-control" id="lrn" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="name">Name:</label>

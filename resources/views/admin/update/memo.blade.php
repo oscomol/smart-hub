@@ -11,11 +11,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">List of Memos</h3>
-                    {{-- <div class="card-tools">
+                    <div class="card-tools">
                         <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#add-memo">
                             Add Memo
                         </button>
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="card-body">
                     <table id="facultymemoDataTable" class="table table-bordered table-striped">
@@ -24,8 +24,8 @@
                                 <th>Memo</th>
                                 <th>Create At</th>
                                 <th>Updated At</th>
-                                {{-- <th>Status</th>
-                                <th>Action</th> --}}
+                                {{-- <th>Status</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,7 +38,7 @@
                                 <span class="badge {{ $item->status == 'PENDING' ? 'bg-secondary' : ($item->status == 'APPROVED' ? 'bg-success' : 'bg-danger') }}">
                                     {{ $item->status == 'PENDING' ? 'Pending' : ($item->status == 'APPROVED' ? 'Approved' : 'Cancelled') }}
                                 </span>                                
-                              </td>
+                              </td>--}}
                               <td>
                                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-memo-{{$item->id}}">
                                     <li class="fa fa-edit"></li>
@@ -46,7 +46,7 @@
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-memo-{{$item->id}}">
                                     <li class="fa fa-trash"></li>
                                 </button>
-                              </td> --}}
+                              </td> 
                             </tr>
 
                             <div>
@@ -117,7 +117,7 @@
     </div>
 </div>
 
-{{-- <form action="{{route('add.memo')}}" method="POST">
+<form action="{{route('add.memo')}}" method="POST">
     @csrf
     @method('post')
 <div class="modal fade" id="add-memo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -142,7 +142,7 @@
       </div>
     </div>
   </div>
-</form> --}}
+</form>
 @endsection
 
 @section('script')

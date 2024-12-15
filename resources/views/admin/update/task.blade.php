@@ -11,11 +11,11 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">List of Events</h3>
-                        {{-- <div class="card-tools">
+                        <div class="card-tools">
                             <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#add-event">
                                 Add Event
                             </button>
-                        </div> --}}
+                        </div>
                 </div>
                 <div class="card-body">
                     <table id="taskDataTable" class="table table-bordered table-striped">
@@ -25,7 +25,7 @@
                                 <th>Description</th>
                                 <th>Start At</th>
                                 <th>End At</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,17 +35,17 @@
                                 <td>{{$item->eventDescription}}</td>
                                 <td>{{$item->startAt}}</td>
                                 <td>{{$item->endAt}}</td>
-                                {{-- <td>
+                                <td>
                                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-event-{{$item->id}}">
                                         <li class="fa fa-edit"></li>
                                     </button>
                                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-event-{{$item->id}}">
                                         <li class="fa fa-trash"></li>
                                     </button>
-                                    <a href="{{route('attendance.event', ['id' => $item->id])}}" class="btn btn-sm btn btn-secondary">
+                                    {{-- <a href="{{route('attendance.event', ['id' => $item->id])}}" class="btn btn-sm btn btn-secondary">
                                       <li class="fa fa-arrow-circle-right"></li>
-                                    </a>
-                                </td> --}}
+                                    </a> --}}
+                                </td>
                               </tr>
                               <div>
 

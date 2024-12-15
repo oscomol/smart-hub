@@ -49,16 +49,20 @@ class LoginCtrl extends Controller
                     'password' => $request->password,
                 ];
 
+
                 if (Auth::attempt($credentials)) {
                     if ($userType === "student") {
                         return redirect('/student');
                     }
-                    if ($userType === "parents") {
+                   
+                    if ($userType === "parents") {  
+                    
                         // Retrieve the student's details
                         $student = Student::where('lrn', $request->lrn)->first();
                         return redirect('/parent');
                     }
                 } else {
+                    
                     return back()->with('error', 'Invalid login credentials');
                 }
             }

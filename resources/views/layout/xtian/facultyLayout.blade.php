@@ -84,22 +84,22 @@
                       </a>
                     </li> --}}
 
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{url('/faculty/list')}}" class="nav-link {{ request()->is('faculty/list') ? 'active' : '' }}">
                       <i class="nav-icon fa fa-group"></i>
                       <p>
                         Faculties
                       </p>
                     </a>
-                  </li>
-                  {{-- <li class="nav-item">
+                  </li> --}}
+                  <li class="nav-item">
                     <a href="{{url('/faculty/task/list')}}" class="nav-link {{ request()->is('faculty/task/list') ? 'active' : '' }}">
                       <i class="nav-icon far fa-calendar"></i>
                       <p>
                         Events
                       </p>
                     </a>
-                  </li> --}}
+                  </li>
                   <li class="nav-item">
                     <a href="{{url('/faculty/announcement/list')}}" class="nav-link {{ request()->is('faculty/announcement/list') ? 'active' : '' }}">
                       <i class="nav-icon fa fa-bullhorn"></i>

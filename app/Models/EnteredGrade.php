@@ -11,7 +11,7 @@ class EnteredGrade extends Model
 
     protected $table = "entered_grades";
 
-    protected $fillable = [
-        "grade", "grade_id", "lrn"
+        protected $fillable = [
+        "grade", "grade_id", "lrn", "section"
     ];
 }

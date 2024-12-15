@@ -190,6 +190,22 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{url('/admin/announcements')}}" class="nav-link {{ request()->is('admin/announcements') ? 'active' : '' }}">
+                              <i class="nav-icon fa fa-bullhorn"></i>
+                              <p>
+                                Announcement
+                              </p>
+                            </a>
+                          </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.notif') }}" class="nav-link {{ request()->is('admin/notifications') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-bell"></i> 
+                                <p>Notification</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('admin.events') }}" class="nav-link {{ request()->is('admin/events') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-calendar"></i> 
                                 <p>Events</p>

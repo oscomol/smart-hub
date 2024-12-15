@@ -32,6 +32,21 @@ use App\Http\Controllers\ParentController;
 |
 */
 
+Route::get('/settings/account', [AdminController::class, 'curUser'])->name('settings.account');
+Route::put('/admin/updateAccount/{id}', [AdminController::class, 'updateAccount'])->name('admin.account.update');
+
+
+Route::delete('/faculty/event/delete', [FacultyTaskCtrl::class, 'destroy'])->name('delete.event');
+Route::post('/faculty/event/add', [FacultyTaskCtrl::class, 'store'])->name('add.event');
+Route::put('/faculty/event/edit/{id}', [FacultyTaskCtrl::class, 'edit'])->name('edit.event');
+
+Route::get('/faculty/event/attencance/{id}', [FacultyTaskCtrl::class, 'eventAttendance'])->name('attendance.event');
+
+
+
+
+
+
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
@@ -54,8 +69,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::post('/chat/fetch-messages', [ChatController::class, 'fetchMessages'])->name('chat.fetchMessages');
 
-    Route::get('/settings/account', [AdminController::class, 'curUser'])->name('settings.account');
-    Route::put('/admin/updateAccount/{id}', [AdminController::class, 'updateAccount'])->name('admin.account.update');
+    
+   
     
     //student routes
     Route::middleware(['checkRole:student'])->group(function() {
@@ -98,6 +113,18 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/grade-section/list/{id}', [FacGradeCtrl::class, 'shedule'])->name('show.schedule');
         Route::post('/admin/schedule/update', [FacGradeCtrl::class, 'updateSchedule'])->name('update.schedule');
         Route::delete('/admin/schedule/delete/{day}/{id}', [FacGradeCtrl::class, 'destroySchedule'])->name('delete.schedule');
+
+
+
+
+
+        Route::get('/admin/notifications', [AdminController::class, 'notifIndex'])->name('admin.notif');
+
+
+        Route::get('/admin/announcements', [AdminController::class, 'announcementsIndex'])->name('admin.announcements');
+
+
+
 
 
         Route::get('/admin/memo', [AdminController::class, 'memoIndex'])->name('admin.memo');
@@ -201,23 +228,15 @@ Route::group(['middleware' => 'auth'], function() {
         Route::put('/assignment/update/{assignment_id}', [FacultyCtrl::class, 'updateAssignment'])->name('update.assignment');
 
         Route::get('/faculty/task/list', [FacultyTaskCtrl::class, 'index']);
-        Route::delete('/faculty/event/delete', [FacultyTaskCtrl::class, 'destroy'])->name('delete.event');
-        Route::post('/faculty/event/add', [FacultyTaskCtrl::class, 'store'])->name('add.event');
-        Route::put('/faculty/event/edit/{id}', [FacultyTaskCtrl::class, 'edit'])->name('edit.event');
-
-        Route::get('/faculty/event/attencance/{id}', [FacultyTaskCtrl::class, 'eventAttendance'])->name('attendance.event');
+       
 
         Route::get('/faculty/notification/list', [FacNotifCtrl::class, 'index']);
 
         Route::get('/faculty/memo/list', [FacMemoCtrl::class, 'index']);
-        Route::post('/faculty/memo/add', [FacMemoCtrl::class, 'store'])->name('add.memo');
-        Route::put('/faculty/memo/edit/{id}', [FacMemoCtrl::class, 'edit'])->name('edit.memo');
-        Route::delete('/faculty/memo/delete', [FacMemoCtrl::class, 'destroy'])->name('delete.memo');
+      
         
         Route::get('/faculty/announcement/list', [FacAnnouncementCtrl::class, 'index']);
-        Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
-        Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
-        Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');
+       
 
         Route::get('/faculty/grade-section/list', [FacGradeCtrl::class, 'facultyClass']);
         Route::get('/faculty/grade-section/list/view/{id}', [FacGradeCtrl::class, 'facultyClassView'])->name('faculty.student');
@@ -231,13 +250,13 @@ Route::group(['middleware' => 'auth'], function() {
 
         // Route::post('/faculty/instructor/update/{id}', [FacGradeCtrl::class, 'updateInstructor'])->name('update.instructor');
 
-        Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
-        Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
+        // Route::get('/faculty/student/list', [FacGradeCtrl::class, 'studentIndex']);
+        // Route::post('/faculty/student/update/{id}', [FacGradeCtrl::class, 'updateEnroll'])->name('update.enroll');
 
          //SUBJECT
          Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
          Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
-         Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
+        //  Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
  
     });
 });
@@ -245,4 +264,14 @@ Route::group(['middleware' => 'auth'], function() {
 
 Route::post('/faculty/subject/add/{id}', [FacGradeCtrl::class, 'addSubject'])->name('add.subject');
 Route::delete('/faculty/subject/delete/{id}', [FacGradeCtrl::class, 'destroySubject'])->name('delete.subject');
-Route::post('/faculty/grade/add/{subjectId}/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
+Route::post('/faculty/grade/add/{studentId}', [FacGradeCtrl::class, 'addGrade'])->name('update.grade');
+
+
+Route::post('/faculty/memo/add', [FacMemoCtrl::class, 'store'])->name('add.memo');
+Route::put('/faculty/memo/edit/{id}', [FacMemoCtrl::class, 'edit'])->name('edit.memo');
+Route::delete('/faculty/memo/delete', [FacMemoCtrl::class, 'destroy'])->name('delete.memo');
+
+
+Route::post('/faculty/announcement/add', [FacAnnouncementCtrl::class, 'store'])->name('add.announcement');
+Route::delete('/faculty/announcement/delete', [FacAnnouncementCtrl::class, 'destroy'])->name('delete.announcement');
+Route::put('/faculty/announcement/edit/{id}', [FacAnnouncementCtrl::class, 'edit'])->name('edit.announcement');

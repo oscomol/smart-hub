@@ -22,14 +22,73 @@ class FacGradeCtrl extends Controller
 {
     use LogUserActivityTrait;
 
+    public function addGrade(Request $request){
+        try{
+
+
+            $user = auth()->user()->lrn;
+
+            $subject = Faculty::where('faculty_id', $user)
+            ->select('department', 'id')
+            ->first();
+
+           if($subject){
+
+            $isExist = EnteredGrade::where('grade_id', $subject->id)
+            ->where('lrn', $request->studentId)
+            ->where('section', $request->section)
+            ->first();
+
+            if($isExist){
+                if(isset($request->actionType)){
+                    $isExist->delete();
+                }else{
+                    $isExist->update([
+                        'grade' => $request->grade
+                    ]);
+                }
+                    
+            }else{
+                    EnteredGrade::create([
+                        "grade_id" => $subject->id,
+                        "lrn" => $request->studentId,
+                        "grade" => $request->grade,
+                        "section" => $request->section
+                    ]);
+            }
+
+            
+            return back()->with('success', "Success");
+            
+           }
+         
+        }catch(Exception $err){
+            return back()->with('error', "Something went wrong");
+        }
+    }
+
     public function facultyClassView(Request $request){
        $grade = Grade::where('id', $request->id)->first();
 
        $students = Enrol::where('grade_id', $request->id)->get();
 
-       $students = $students->map(function($stud){
+       $user = auth()->user();
+
+      $faculty = Faculty::where('faculty_id', $user->lrn)->first();
+
+       $students = $students->map(function($stud) use($faculty, $grade){
         $student = Student::where('lrn', $stud->student_id)
         ->first();
+
+        $grade = EnteredGrade::where('grade_id', $faculty->id)
+        ->where('lrn', $stud->student_id)
+        ->where('section', $grade->id)
+        ->select('grade')
+        ->first();
+
+        if($grade){
+            $student->grade = $grade->grade;
+        }
 
         return $student;
        });
@@ -46,7 +105,8 @@ class FacGradeCtrl extends Controller
 
         $subjects = ClassSubject::where("subject", $faculty->id)
         ->select('grade_id')
-        ->get()->unique();
+        ->distinct()
+        ->get();
 
         $grade = $subjects->map(function($gra){
 
@@ -348,41 +408,5 @@ class FacGradeCtrl extends Controller
            }
     }
 
-    public function addGrade(Request $request){
-        try{
-
-
-            $isExist = EnteredGrade::where('grade_id', $request->subjectId)
-            ->where('lrn', $request->studentId)->first();
-
-            if($isExist){
-                if($request->grade){
-                    $isExist->update([
-                        'grade' => $request->grade
-                    ]);
-                }else{
-                    $isExist = EnteredGrade::where('grade_id', $request->subjectId)
-                    ->where('lrn', $request->studentId)->first();
-    
-                    if($isExist){
-                        $isExist->delete();
-                    }else{
-                        return back()->with('error', "Something went wrong");
-                    }
-                }
-            }else{
-                EnteredGrade::create([
-                    "grade_id" => $request->subjectId,
-                    "lrn" => $request->studentId,
-                    "grade" => $request->grade
-                ]);
-            }
-
-            
-            return back()->with('success', "Success");
-         
-        }catch(Exception $err){
-            return back()->with('error', "Something went wrong");
-        }
-    }
+   
 }

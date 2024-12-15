@@ -22,69 +22,100 @@ use Illuminate\Http\Request;
 
 class ParentController extends Controller
 {
-    public function scheduleIndex() {
+    public function scheduleIndex(){
         $user = auth()->user();
         $lrn = $user->lrn;
         $userData = Student::where('lrn', $lrn)->first();
 
-        $gradeSection = "";
+       $gradeSection = "";
+    
         $enrol = Enrol::where('student_id', $lrn)->first();
+    
         $isEnrol = false;
         $days = [];
+
         $subjects = null;
-        
+
         if ($enrol) {
             $isEnrol = true;
-            $grade = Grade::where('id', $enrol->grade_id)->first();
-            $subject = ClassSubject::where('grade_id', $grade->id)->get();
 
-            $subjects = $subject->map(function($sub) use ($lrn) {
-                $grades = EnteredGrade::where('lrn', $lrn)->where('grade_id', $sub->id)->first();
-                if ($grades) {
-                    $sub->grade = $grades->grade;
+            $grade = Grade::where('id', $enrol->grade_id)->first();
+
+            $subject = ClassSubject::where('grade_id', $grade->id)
+            ->select('subject')
+            ->distinct()
+            ->get();
+
+            $subjects = $subject->map(function($sub)use($lrn, $grade ){
+
+                $instructor = Faculty::where('id', $sub->subject)
+                ->select('name', 'department')
+                ->first();
+              
+                if($instructor){
+            
+
+                    $averageGrade = EnteredGrade::where('lrn', $lrn)
+                    ->where('grade_id', $sub->subject)
+                    ->where('section', $grade->id)
+                    ->avg('grade');
+
+                  
+                    if($averageGrade){
+                        $sub->grade = round($averageGrade, 2);
+                    }
+
+                    $sub->instructor = $instructor->name;
+                    $sub->subject = $instructor->department;
                 }
+
+                
                 return $sub;
             });
 
             $gradeSection .= "Grade $grade->grade - $grade->section";
+    
             $curId = $grade->id;
-
+    
             $days = [
-                ["day" => "Monday", "startAt" => null, "endAt" => null, "instructor" => null],
-                ["day" => "Tuesday", "startAt" => null, "endAt" => null, "instructor" => null],
-                ["day" => "Wednesday", "startAt" => null, "endAt" => null, "instructor" => null],
-                ["day" => "Thursday", "startAt" => null, "endAt" => null, "instructor" => null],
-                ["day" => "Friday", "startAt" => null, "endAt" => null, "instructor" => null],
+                ["day" => "Monday", "time" => null, "subject" => null, "instructor" => null],
+                ["day" => "Tuesday", "time" => null, "subject" => null, "instructor" => null],
+                ["day" => "Wednesday", "time" => null, "subject" => null, "instructor" => null],
+                ["day" => "Thursday", "time" => null, "subject" => null, "instructor" => null],
+                ["day" => "Friday", "time" => null, "subject" => null, "instructor" => null],
             ];
-
+    
             $instructor = Instruc::where('grade_id', $curId)->first();
+    
             if ($instructor) {
                 $instructor = Faculty::where('id', $instructor->instructor_id)->first();
             }
-
+    
             $days = array_map(function($day) use ($curId, $instructor) {
-                $sched = ClassSchedule::where('day', $day['day'])
-                    ->where('grade_id', $curId)
-                    ->first();
 
                 $subjects = ClassSubject::where('grade_id', $curId)->where('day', $day['day'])->get();
-                if ($subjects->count() > 0) {
+
+                if($subjects->count() > 0){
+
+                    $subjects = $subjects->map(function($sub){
+                        $instructor = Faculty::where('id', $sub->subject)
+                        ->select('name', 'department')
+                        ->first();
+
+                        $instructor->time = "$sub->startTime - $sub->endTime";
+
+                        return $instructor;
+                    });
+
                     $day['subjects'] = $subjects;
                 }
-                
-                if ($sched) {
-                    $day['startAt'] = $sched->startAt;
-                    $day['endAt'] = $sched->endAt;
-                }
-
-                if (isset($instructor)) {
-                    $day['instructor'] = $instructor->name; 
-                }
-
+    
                 return $day;
             }, $days);
         }
-    
+
+       
+
         $title = "$userData->name $gradeSection";
 
         return view('parents.schedule', compact('days', 'isEnrol', 'title', 'gradeSection', 'user', 'subjects'));

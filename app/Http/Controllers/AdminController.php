@@ -13,7 +13,9 @@ use App\Models\Facility;
 use App\Models\UserLog;
 use App\Models\FacEvent;   
 use App\Models\FacAnnouncement;
+use App\Models\FacNotif;
 use App\Models\Memo;
+use App\Models\Notification;
 use App\Traits\LogUserActivityTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +25,17 @@ class AdminController extends Controller
 {
     use LogUserActivityTrait;
 
+    public function announcementsIndex(Request $request){
+        $announcements = FacAnnouncement::all();
+        return view("admin.update.announcement", compact('announcements'));
+    }
+
+
+    public function notifIndex(){
+        $notifs = FacNotif::all();
+
+        return view('admin.update.notification', compact('notifs'));
+    }
 
     public function memoIndex(){
         $memos = Memo::all();
@@ -183,7 +196,7 @@ class AdminController extends Controller
         $userData = [
             'username' => $student->name, // Use student's name as username
             'lrn' => $student->lrn,
-            'password' => Hash::make('studentpassword'), // default password
+            'password' => Hash::make('student'), // default password
             'userType' => 'student',
         ];
 
@@ -200,7 +213,7 @@ class AdminController extends Controller
         $userData = [
             'username' => $guardian->father_name, // or mother_name if preferred
             'lrn' => $student->lrn,               // Link with student’s LRN
-            'password' => Hash::make('parentpassword'), // Default password
+            'password' => Hash::make('parent'), // Default password
             'userType' => 'parents',
         ];
 
@@ -388,8 +401,9 @@ class AdminController extends Controller
     # method to insert faculty record
     public function storeNewFaculty(Request $request) {
        
+       
         // Validate the incoming request data
-        $request->validate([
+ $request->validate([
             'name' => 'required|string|max:255',
             'birth' => 'required|date',
             'gender' => 'required|string|max:10',
@@ -419,9 +433,12 @@ class AdminController extends Controller
             'faculty_id.unique' => 'The Faculty ID has already been taken. Please use a  different Faculty ID.',
         ]);
 
+
+
         // Create a new Faculty instance and fill it with the request data
         $faculty = new Faculty();
 
+     
         $faculty->fill($request->all());
 
         // dd( $faculty);
@@ -533,7 +550,7 @@ class AdminController extends Controller
 
     public function curUser()
     {
-        $user = auth()->user(); 
+        $user = auth()->user();         
 
         // Check if user is authenticated
         if (!$user) {

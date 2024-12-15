@@ -24,7 +24,7 @@
                                 <th>Memo</th>
                                 <th>Create At</th>
                                 <th>Updated At</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -34,11 +34,11 @@
                               <td>{{$item->memo}}</td>
                               <td>{{$item->created_at}}</td>
                               <td>{{$item->updated_at}}</td>
-                              <td>
+                              {{-- <td>
                                 <span class="badge {{ $item->status == 'PENDING' ? 'bg-secondary' : ($item->status == 'APPROVED' ? 'bg-success' : 'bg-danger') }}">
                                     {{ $item->status == 'PENDING' ? 'Pending' : ($item->status == 'APPROVED' ? 'Approved' : 'Cancelled') }}
                                 </span>                                
-                              </td>
+                              </td> --}}
                               <td>
                                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-memo-{{$item->id}}">
                                     <li class="fa fa-edit"></li>
